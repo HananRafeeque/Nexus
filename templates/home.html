@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<h2>Upload Dataset for Analysis</h2>
+<form class="upload" action="{{ url_for('home') }}" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" required>
+    <button type="submit" class="btn btn-info">Upload</button>
+</form>
+
+{% if error_message %}
+    <div class="alert alert-danger" role="alert">
+        {{ error_message }}
+    </div>
+{% endif %}
+
+<form class="clear" action="{{ url_for('home') }}" method="post">
+    <button type="submit" class="btn btn-danger" name="clear">Clear Data</button>
+</form>
+
+<style>
+    body {
+        height: 95vh !important;
+        background-color: #10143a; /* Ensure this matches your body background color */
+        color: white; /* Set text color for better visibility */
+    }
+    .upload {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10rem;
+        margin-top: 10rem;
+    }
+    .clear {
+        margin-top: 5rem;
+        display: flex;
+        justify-content: center;
+    }
+    a {
+        color: #ffca01; /* Customize the link color */
+        text-decoration: underline; /* Make links more noticeable */
+        text-decoration: none;
+    }
+</style>
+{% endblock %}

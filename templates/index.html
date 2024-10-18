@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis on Customer Reviews</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <!-- <h1>Nexus</h1>
+            <p>Customer Review Analysis</p> -->
+            <div class="navbar">
+                <ul class="nav-list">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="/about" id="about" target="_blank">About</a></li>
+                    <li id="nexus"><a href="">Nexus</a></li>
+                    <li><a href="#">Team</a></li>
+                    <li><a href="#">Report</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <main>
+            <section class="upload-section">
+                <div class="text">
+                    <h2>Upload CSV File</h2>
+                    <form id="upload-form" method="POST" enctype="multipart/form-data">
+                    <input type="file" id="file-input" name="file" accept=".csv" required>
+                    <button class="upl-btn" type="submit">Analyze</button>
+                </form>
+                </div>
+                <img src="/static/images/sticker.png" alt="rate">
+            </section>
+
+            {% if results %}
+
+
+            <section class="results-section">
+                <h2>Sentiment Analysis Results</h2>
+                <br>
+                <br>
+
+                <h2>INSIGHTS</h2>
+                <div class="insights">
+                    
+                <!-- Display the chart -->
+                    <div class="cards">
+                        <p class="card">Total Count: {{ results.total_count }}</p>
+                        <p class="card">Total Positive: {{ results.total_positive }}</p>
+                        <p class="card">Total Negative: {{ results.total_negative }}</p>
+                        <p class="card">Total Neutral: {{ results.total_neutral }}</p>
+                        <!-- <p class="card">Top Positive: {{ results.top_positive }}</p> -->
+                        <!-- <p class="card">Top Negative: {{ results.top_negative }}</p> -->
+                        <!-- {% if results.accuracy is not none %} -->
+                        <!-- <p class="card">Accuracy: {{ results.accuracy | round(2) }}</p> -->
+                        <!-- <p class="card">Error Rate: {{ results.error_rate | round(2) }}</p> -->
+                        <!-- {% else %} -->
+                        <!-- <p class="card">Accuracy: Not available (No true sentiment column)</p> -->
+                        <!-- <p class="card">Error Rate: Not available (No true sentiment column)</p> -->
+                        <!-- {% endif %} -->
+                    </div>
+                    <div class="chart-section">
+                        <!-- <h3>Sentiment Distribution</h3> -->
+                        <img src="{{ results.chart }}" alt="Sentiment Distribution Chart">
+                    </div>
+                    
+                </div>
+
+
+
+                <!-- Download button for analyzed dataset -->
+                <div class="download-section">
+                    <h3>Download Analyzed Data</h3>
+                    <button><a href="{{ url_for('download_file', path=results.analyzed_file) }}" class="btn-download">Download CSV</a></button>
+                </div>
+            </section>
+                
+            <section class="review-table">
+                <div class="scrollable-box">
+                    <!-- Display the reviews and their sentiments -->
+                    <table border="2">
+                        <thead style="color: red;">
+                            <tr>
+                                <th>Review</th>
+                                <th>Sentiment</th>
+                                <th>Emotion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for review, sentiment, emotion in results.reviews %}
+                            <tr>
+                                <td>{{ review }}</td>
+                                <td>{{ sentiment }}</td>
+                                <td>{{ emotion }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <a href="#" id="goto">Go to HomePage</a>
+            </section>
+            {% endif %}
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Sentiment Analysis Tool. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
