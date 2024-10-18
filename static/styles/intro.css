@@ -1,0 +1,22 @@
+*{
+    margin-left: .5rem;
+
+}
+body{
+    background-color: #181e4f;
+    color: white;
+}
+li{
+    margin-left: 1.5rem;
+}
+
+.head a{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    color: #ffca01; 
+}
+
+.tech li{
+    margin: 1rem;
+}

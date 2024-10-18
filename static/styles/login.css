@@ -1,0 +1,76 @@
+body {
+    background-color: #10143a; /* Consistent with your theme */
+    font-family: Arial, sans-serif;
+
+    height: 100vh;
+    margin: 0;
+}
+.login {
+    background-color: #13184d; /* Consistent with your theme */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 40%;
+    margin-top: 5%;
+}
+h2 {
+    text-align: center;
+    color: #ffffff; /* White text for the heading */
+    margin-bottom: 20px;
+}
+.ele{
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+input{
+    width: 18rem;
+    height: 2rem;
+    border-radius: .5rem;
+}
+
+
+nav{
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold !important;
+    margin-left: 2rem;
+    display: flex;
+    flex-direction: row;
+}
+nav img{
+    width: 5rem;
+}
+
+
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ffca01; /* Button color consistent with your theme */
+    color: #10143a; /* Dark text color for contrast */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+button:hover {
+    background-color: #ac8600; /* Darker shade for hover effect */
+}
+.register-link {
+    text-align: center;
+    margin-top: 15px;
+    color: #ffffff; /* White text for the link */
+}
+.register-link a {
+    color: #ffca01; /* Link color */
+    text-decoration: none; /* No underline */
+}
+.register-link a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
