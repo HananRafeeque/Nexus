@@ -17,6 +17,7 @@
     <div class="register">
         <h2>Register</h2>
         <form method="POST" action="{{ url_for('register') }}">
+            {{ form.hidden_tag() }}  <!-- CSRF token for security -->
             <div class="ele">
                 <input type="text" name="username" placeholder="Username" required>
                 <input type="email" name="email" placeholder="Email" required>

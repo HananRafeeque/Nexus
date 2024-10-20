@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template, request, redirect, send_file, url_for, session, flash
-from flask_sqlalchemy import SQLAlchemy
+from  flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 import pandas as pd
 import matplotlib
@@ -16,9 +16,15 @@ from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import MultinomialNB
+from flask_wtf.csrf import CSRFProtect
+from forms import RegistrationForm
+from forms import LoginForm
+
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Replace with your own secret key
+app.secret_key = 'N3X65'  #  The secret key
+
+csrf = CSRFProtect(app)  # Enabled CSRF protection
 
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -138,10 +144,11 @@ def intro():
 # Route for the registration page
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        email = request.form['email']
-        password = request.form['password']
+    form = RegistrationForm()
+    if form.validate_on_submit():  # Tohandle form validation and CSRF protection
+        username = form.username.data
+        email = form.email.data
+        password = form.password.data
         
         # Check if the user already exists
         existing_user = User.query.filter_by(username=username).first()
@@ -158,14 +165,15 @@ def register():
         flash('Registration successful! You can now log in.', 'success')
         return redirect(url_for('login'))
     
-    return render_template('register.html')
+    return render_template('register.html',form=form)
 
 # Route for the login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+    form = LoginForm()
+    if form.validate_on_submit():  # to use Flask-WTF's form validation and CSRF protection
+        username = form.username.data  # to access form data via Flask-WTF
+        password = form.password.data  
 
         # Check if user exists
         user = User.query.filter_by(username=username).first()
@@ -178,7 +186,7 @@ def login():
             flash('Login failed. Please check your username and password.', 'error')
             return redirect(url_for('login'))
     
-    return render_template('login.html')
+    return render_template('login.html', form=form)
 
 # Route for the home page after login
 
