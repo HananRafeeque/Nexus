@@ -6,17 +6,31 @@
     <h2>Dashboard</h2>
 
     <style>
+        .table-container {
+        position: relative;
+        height: 300px;
+        overflow-y: auto;
+        margin: 2rem;
+        border: solid 1px #fff;
+        }
+
         table {
-            border-collapse: collapse; /* Ensures that borders are not doubled */
-            width: 100%; /* Makes the table take the full width */
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 3rem;
         }
+
+        thead {
+            position: sticky;
+            top: 0;
+            background-color: #333;
+            z-index: 10;
+        }
+
         th, td {
-            border: 2px solid rgb(255, 255, 255); /* Adds a white border to table cells */
-            padding: 8px; /* Adds some padding for better spacing */
-            text-align: left; /* Aligns text to the left */
-        }
-        th {
-            color: rgb(255, 255, 255); /* Sets the text color for header */
+            border: 2px solid rgb(255, 255, 255);
+            padding: 8px;
+            text-align: left;
         }
 
         /* Loading styles */
@@ -44,9 +58,9 @@
         /* } */
         .graphs{
             display: flex;
-            flex-direction: row;
-            gap: 20rem ;
-            padding-left: 8rem;
+            flex-direction: column;
+            gap: 5rem ;
+            padding-left: 2rem;
 
         }
         .graphs img,.chart-container,#myChart{
@@ -98,26 +112,28 @@
         {% endif %}
     
     
-        <table>
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Review</th>
-                    <th>Sentiment</th>
-                    <th>Emotion</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for review in reviews %}
-                <tr>
-                    <td>{{ review['Column Number'] }}</td>
-                    <td>{{ review['reviews'] }}</td>
-                    <td>{{ review['Sentiment'] }}</td>
-                    <td>{{ review['Emotion'] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Review</th>
+                        <th>Sentiment</th>
+                        <th>Emotion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for review in reviews %}
+                    <tr>
+                        <td>{{ review['Column Number'] }}</td>
+                        <td>{{ review['reviews'] }}</td>
+                        <td>{{ review['Sentiment'] }}</td>
+                        <td>{{ review['Emotion'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% else %}
         <div style="color: red;">
             <p>No data available. Please upload a dataset on the Home page.</p>

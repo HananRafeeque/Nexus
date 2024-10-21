@@ -51,7 +51,7 @@ def index():
         plt.figure(figsize=(8, 6))
         plt.bar(sentiment_counts.keys(), sentiment_counts.values(), color=['#b5196a', '#feb800', '#17552e'])
         plt.xlabel('Sentiment')
-        plt.ylabel('Number of Reviews')``
+        plt.ylabel('Number of Reviews')
         plt.title('Sentiment Analysis Distribution')
         
         # Save the plot as an image file
