@@ -269,6 +269,21 @@ def about():
 def team():
     return render_template('team.html')
 
+# @app.route('/dashboard')
+# def dashboard():
+#     if os.path.exists(ANALYZED_DATA_PATH):
+#         df = pd.read_csv(ANALYZED_DATA_PATH)
+
+#         # Prepare the reviews for display
+#         reviews = df.to_dict(orient='records')
+
+#         # Check if there's a chart generated
+#         chart_exists = os.path.exists(CHART_PATH)
+
+#         return render_template('dashboard.html', chart_exists=chart_exists, reviews=reviews)
+#     else:
+#         return render_template('dashboard.html', chart_exists=False, reviews=[])
+
 @app.route('/dashboard')
 def dashboard():
     if os.path.exists(ANALYZED_DATA_PATH):
@@ -277,14 +292,21 @@ def dashboard():
         # Prepare the reviews for display
         reviews = df.to_dict(orient='records')  # Convert DataFrame to a list of dictionaries
 
+        # Count the total number of reviews, positive reviews, and negative reviews
+        total_reviews = len(df)
+        positive_reviews = len(df[df['Sentiment'] == 'Positive'])
+        negative_reviews = len(df[df['Sentiment'] == 'Negative'])
+        neutral_reviews = len(df[df['Sentiment'] == 'Neutral'])
+
         # Check if there's a chart generated
         chart_exists = os.path.exists(CHART_PATH)
 
-        return render_template('dashboard.html', chart_exists=chart_exists, reviews=reviews)
+        return render_template('dashboard.html', chart_exists=chart_exists, reviews=reviews,
+                               total_reviews=total_reviews, positive_reviews=positive_reviews,
+                               negative_reviews=negative_reviews,neutral_reviews=neutral_reviews)
     else:
-        return render_template('dashboard.html', chart_exists=False, reviews=[])
+        return render_template('dashboard.html', chart_exists=False, reviews=[], total_reviews=0, positive_reviews=0, negative_reviews=0, neutral_reviews=0)
 
-import os
 
 
 @app.route('/download')

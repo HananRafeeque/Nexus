@@ -6,6 +6,17 @@
     <h2>Dashboard</h2>
 
     <style>
+        .review-counts{
+            display: flex;
+            justify-content: space-evenly;
+            margin-bottom: 1rem;
+        }
+        .review-count p{
+            border: solid 1px #fff;
+            padding: 2rem;
+            border-radius: 10px;
+        }
+
         .table-container {
         position: relative;
         height: 300px;
@@ -79,12 +90,22 @@
             width: 240px !important;
             height: 240px !important;
         }
+        #myLineChart{
+            width: 400px !important;
+            height: 240px !important;
+        }
     </style>
 
     <div id="loading" class="loading">Loading... Please wait.</div>
 
 
     {% if reviews and reviews|length > 0 %}
+        <div class="review-counts">
+            <p><strong>Total Reviews:</strong> {{ total_reviews }}</p>
+            <p><strong>Positive Reviews:</strong> {{ positive_reviews }}</p>
+            <p><strong>Negative Reviews:</strong> {{ negative_reviews }}</p>
+            <p><strong>Neutral Reviews:</strong> {{ neutral_reviews }}</p>
+        </div>
 
         <!-- Chart.js chart -->
         <div class="graphs">
@@ -92,6 +113,7 @@
             <div class="chart-container">
                 <canvas id="myChart"></canvas>
                 <canvas id="myPieChart"></canvas>
+                <canvas id="myLineChart"></canvas>
             </div>
     
     
@@ -208,6 +230,28 @@
                     ],
                     borderWidth: 1
                 }]
+            }
+        });
+        const lineCtx = document.getElementById('myLineChart').getContext('2d');
+        const myLineChart = new Chart(lineCtx, {
+            type: 'line', // Line chart
+            data: {
+                labels: ['Positive', 'Negative', 'Neutral'],
+                datasets: [{
+                    label: 'Sentiment Analysis (Line)',
+                    data: [12, 19, 5],
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    fill: true // Optional, to fill under the line
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
             }
         });
 
