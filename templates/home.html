@@ -3,8 +3,9 @@
 {% block content %}
 <h2>Upload Dataset for Analysis</h2>
 <form class="upload" action="{{ url_for('home') }}" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" required>
-    <button type="submit" class="btn btn-info">Upload</button>
+    {{ form.hidden_tag() }} 
+    {{ form.file }}  <button type="submit" class="btn btn-primary">Upload</button>
+    <!-- {{ form.submit }}   -->
 </form>
 
 {% if error_message %}
@@ -14,7 +15,7 @@
 {% endif %}
 
 <form class="clear" action="{{ url_for('home') }}" method="post">
-    <button type="submit" class="btn btn-danger" name="clear">Clear Data</button>
+    {{ form.hidden_tag() }}  <button type="submit" class="btn btn-danger" name="clear">Clear Data</button>
 </form>
 
 <style>

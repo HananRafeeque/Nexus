@@ -1,9 +1,10 @@
 import os
 from flask import Flask, render_template, request, redirect, send_file, url_for, session, flash
-from  flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 import pandas as pd
 import matplotlib
+from wtforms import Form
 matplotlib.use('Agg')  # Use a non-interactive backend
 import matplotlib.pyplot as plt
 import re
@@ -17,7 +18,7 @@ from sklearn.metrics import accuracy_score, classification_report
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import MultinomialNB
 from flask_wtf.csrf import CSRFProtect
-from forms import RegistrationForm
+from forms import RegistrationForm, UploadForm
 from forms import LoginForm
 
 
@@ -192,15 +193,21 @@ def login():
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
+    form = UploadForm()
+    if form.validate_on_submit():  # Ensure form validation and CSRF protection
+        file = request.files['file']
+        
+             
     if request.method == 'POST':
         if 'clear' in request.form:
-            if os.path.exists(ANALYZED_DATA_PATH):
-                os.remove(ANALYZED_DATA_PATH)
-                print("Removed analyzed_reviews.csv")
-            if os.path.exists(CHART_PATH):
-                os.remove(CHART_PATH)
-                print("Removed sentiment_chart.png")
-            return render_template('home.html', chart_exists=False)
+            if form.validate_on_submit():
+                if os.path.exists(ANALYZED_DATA_PATH):
+                    os.remove(ANALYZED_DATA_PATH)
+                    print("Removed analyzed_reviews.csv")
+                if os.path.exists(CHART_PATH):
+                    os.remove(CHART_PATH)
+                    print("Removed sentiment_chart.png")
+                return render_template('home.html', chart_exists=False)
 
         if 'file' not in request.files:
             flash('No file selected.', 'error')
@@ -250,7 +257,7 @@ def home():
         # ...
         return redirect(url_for('dashboard'))
 
-    return render_template('home.html', chart_exists=False)
+    return render_template('home.html', form=form , chart_exists=False)
 
 # Route for the about page
 @app.route('/about')
