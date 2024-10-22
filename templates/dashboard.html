@@ -180,6 +180,10 @@
             });
         }
 
+        const positiveReviews = {{ positive_reviews }};
+        const negativeReviews = {{ negative_reviews }};
+        const neutralReviews = {{ neutral_reviews }};
+
         // Chart.js code
         const ctx = document.getElementById('myChart').getContext('2d');
         const myChart = new Chart(ctx, {
@@ -188,7 +192,7 @@
                 labels: ['Positive', 'Negative', 'Neutral'], // Change labels based on your sentiment analysis
                 datasets: [{
                     label: 'Sentiment Analysis',
-                    data: [12, 19, 5], // Replace with actual data (e.g., counts of each sentiment)
+                    data: [positiveReviews, negativeReviews, neutralReviews], // Replace with actual data (e.g., counts of each sentiment)
                     backgroundColor: [
                         'rgba(75, 192, 192, 0.2)',
                         'rgba(255, 99, 132, 0.2)',
@@ -217,7 +221,7 @@
                 labels: ['Positive', 'Negative', 'Neutral'],
                 datasets: [{
                     label: 'Sentiment Analysis',
-                    data: [12, 19, 5], // Same data as the bar chart
+                    data: [positiveReviews, negativeReviews, neutralReviews], // Same data as the bar chart
                     backgroundColor: [
                         'rgba(75, 192, 192, 0.2)',
                         'rgba(255, 99, 132, 0.2)',
@@ -239,7 +243,7 @@
                 labels: ['Positive', 'Negative', 'Neutral'],
                 datasets: [{
                     label: 'Sentiment Analysis (Line)',
-                    data: [12, 19, 5],
+                    data: [positiveReviews, negativeReviews, neutralReviews],
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 1,
