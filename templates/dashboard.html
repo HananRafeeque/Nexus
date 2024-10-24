@@ -6,46 +6,47 @@
     <h2>Dashboard</h2>
 
     <style>
-        .review-counts{
+        .review-counts {
             display: flex;
             justify-content: space-evenly;
             margin-bottom: 1rem;
         }
-        .review-count p{
-            border: solid 1px #fff;
-            padding: 2rem;
+        .review-counts p {
+            border: solid 1px #fff !important;
+            padding: 1rem;
             border-radius: 10px;
         }
-
-        .table-container {
-        position: relative;
-        height: 300px;
-        overflow-y: auto;
-        margin: 2rem;
-        border: solid 1px #fff;
-        scrollbar-color: #888 #333 !important;
-        scrollbar-width: thin !important;
-        border-radius: 2px;
+        .review-counts p:hover {
+            background-color: #fff;
+            color: black;
+            transition: .5s ease-in-out;
+            scale: 1.1;
         }
-
+        .table-container {
+            position: relative;
+            height: 300px;
+            overflow-y: auto;
+            margin: 2rem;
+            border: solid 1px #fff;
+            scrollbar-color: #888 #333 !important;
+            scrollbar-width: thin !important;
+            border-radius: 2px;
+        }
         table {
             border-collapse: collapse;
             width: 100%;
         }
-
         thead {
             position: sticky;
             top: 0;
             background-color: #333;
             z-index: 10;
         }
-
         th, td {
             border: 2px solid rgb(255, 255, 255);
             padding: 8px;
             text-align: left;
         }
-
         /* Loading styles */
         .loading {
             display: none; /* Hide by default */
@@ -61,43 +62,56 @@
             padding-top: 20%;
             font-size: 24px; /* Adjust font size */
         }
-        .chart-container{
+        .chart-container {
             display: flex;
             justify-content: space-evenly;
             flex-wrap: wrap;
         }
-        canvas{
+        canvas {
             width: 25%;
             height: 15rem;
         }
-
-        a{
+        a {
             text-decoration: none;
-            color: white;
+            color: #ffca01; /* Customize the link color */
+            text-decoration: underline; /* Make links more noticeable */
+            text-decoration: none;
         }
-        .d-but{
+
+        .d-but {
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 2rem;
             gap: 2rem;
+            margin-top: 0 !important;
+            color: white !important;
+
         }
-        #myChart{
+        .d-but a{
+            color: white;
+            
+        }
+        #myChart {
             width: 30rem !important;
             height: 15rem !important;
         }
-        #myPieChart{
+        #myPieChart {
             width: 240px !important;
             height: 240px !important;
         }
-        #myLineChart{
+        #myLineChart {
             width: 400px !important;
             height: 240px !important;
         }
+        button{
+            color: white ;
+            margin-top: -4rem !important;
+        }
+
     </style>
 
     <div id="loading" class="loading">Loading... Please wait.</div>
-
 
     {% if reviews and reviews|length > 0 %}
         <div class="review-counts">
@@ -107,31 +121,22 @@
             <p><strong>Neutral Reviews:</strong> {{ neutral_reviews }}</p>
         </div>
 
-        <!-- Chart.js chart -->
+        <!-- Chart.js charts -->
         <div class="graphs">
-
             <div class="chart-container">
                 <canvas id="myChart"></canvas>
                 <canvas id="myPieChart"></canvas>
                 <canvas id="myLineChart"></canvas>
             </div>
-    
-    
-            {% if chart_exists %}
-                    
-                    <img src="{{ url_for('static', filename='sentiment_chart.png') }}" alt="Sentiment Chart">
-                    <br>
-                
+
+            <!-- {% if chart_exists %}
+                <img src="{{ url_for('static', filename='sentiment_chart.png') }}" alt="Sentiment Chart">
+                <br>
+            {% endif %} -->
         </div>
-        <div class="buttons">
-            <div class="d-but">
-                <button type="button" class="btn btn-success"><a href="{{ url_for('download_file') }}">Download Analyzed Dataset</a></button>
-                <button type="button" class="btn btn-success"><a href="{{ url_for('download_chart') }}">Download Sentiment Chart</a></button>
-            </div>
-        </div>
-        {% endif %}
-    
-    
+
+
+
         <div class="table-container">
             <table>
                 <thead>
@@ -144,15 +149,25 @@
                 </thead>
                 <tbody>
                     {% for review in reviews %}
-                    <tr>
-                        <td>{{ review['Column Number'] }}</td>
-                        <td>{{ review['reviews'] }}</td>
-                        <td>{{ review['Sentiment'] }}</td>
-                        <td>{{ review['Emotion'] }}</td>
-                    </tr>
+                        <tr>
+                            <td>{{ loop.index }}</td> <!-- Automatically increments row number -->
+                            <td>{{ review['reviews'] }}</td>
+                            <td>{{ review['Sentiment'] }}</td>
+                            <td>{{ review['Emotion'] }}</td>
+                        </tr>
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
+        <div class="buttons">
+            <div class="d-but">
+                <button type="button" class="btn btn-success">
+                    <a href="{{ url_for('download_file') }}">Download Analyzed Dataset</a>
+                </button>
+                <!-- <button type="button" class="btn btn-success">
+                    <a href="{{ url_for('download_chart') }}">Download Sentiment Chart</a>
+                </button> -->
+            </div>
         </div>
     {% else %}
         <div style="color: red;">
@@ -189,10 +204,10 @@
         const myChart = new Chart(ctx, {
             type: 'bar', // Change this to 'line', 'pie', etc. for different types of charts
             data: {
-                labels: ['Positive', 'Negative', 'Neutral'], // Change labels based on your sentiment analysis
+                labels: ['Positive', 'Negative', 'Neutral'],
                 datasets: [{
                     label: 'Sentiment Analysis',
-                    data: [positiveReviews, negativeReviews, neutralReviews], // Replace with actual data (e.g., counts of each sentiment)
+                    data: [positiveReviews, negativeReviews, neutralReviews],
                     backgroundColor: [
                         'rgba(75, 192, 192, 0.2)',
                         'rgba(255, 99, 132, 0.2)',
@@ -214,6 +229,7 @@
                 }
             }
         });
+
         const pieCtx = document.getElementById('myPieChart').getContext('2d');
         const myPieChart = new Chart(pieCtx, {
             type: 'pie',
@@ -221,7 +237,7 @@
                 labels: ['Positive', 'Negative', 'Neutral'],
                 datasets: [{
                     label: 'Sentiment Analysis',
-                    data: [positiveReviews, negativeReviews, neutralReviews], // Same data as the bar chart
+                    data: [positiveReviews, negativeReviews, neutralReviews],
                     backgroundColor: [
                         'rgba(75, 192, 192, 0.2)',
                         'rgba(255, 99, 132, 0.2)',
@@ -236,9 +252,10 @@
                 }]
             }
         });
+
         const lineCtx = document.getElementById('myLineChart').getContext('2d');
         const myLineChart = new Chart(lineCtx, {
-            type: 'line', // Line chart
+            type: 'line',
             data: {
                 labels: ['Positive', 'Negative', 'Neutral'],
                 datasets: [{
@@ -258,6 +275,5 @@
                 }
             }
         });
-
     </script>
 {% endblock %}

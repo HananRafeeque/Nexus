@@ -1,3 +1,6 @@
+#updated
+
+
 import os
 from flask import Flask, render_template, request, redirect, send_file, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
@@ -20,6 +23,7 @@ from sklearn.naive_bayes import MultinomialNB
 from flask_wtf.csrf import CSRFProtect
 from forms import RegistrationForm, UploadForm
 from forms import LoginForm
+
 
 
 app = Flask(__name__)
