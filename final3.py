@@ -118,6 +118,7 @@ def train_and_evaluate_models(df):
     rf_model.fit(X_train_tfidf, labels_train)
     rf_pred = rf_model.predict(X_test_tfidf)
     rf_accuracy = accuracy_score(labels_test, rf_pred)
+    
 
     # Naive Bayes Model
     nb_vectorizer = CountVectorizer()
@@ -137,6 +138,7 @@ def train_and_evaluate_models(df):
         'rf_report': classification_report(labels_test, rf_pred),
         'nb_report': classification_report(labels_test, nb_predictions),
     }
+    
 
 # Route for the homepage
 @app.route('/')
@@ -190,7 +192,7 @@ def login():
     
     return render_template('login.html', form=form)
 
-# Route for the home page after login
+
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
@@ -198,7 +200,6 @@ def home():
     if form.validate_on_submit():  # Ensure form validation and CSRF protection
         file = request.files['file']
         
-             
     if request.method == 'POST':
         if 'clear' in request.form:
             if form.validate_on_submit():
@@ -254,11 +255,90 @@ def home():
         df['rating'] = df[rating_column]
         df.to_csv(ANALYZED_DATA_PATH, index=False)
 
-        # Generate sentiment counts and chart as before...
-        # ...
+        # Train and evaluate models, then print results in the terminal
+        model_results = train_and_evaluate_models(df)
+        
+        # Print model accuracy and classification reports to the terminal
+        print("SVM Model Accuracy:", model_results['svm_accuracy'])
+        print("SVM Classification Report:\n", model_results['svm_report'])
+        print("Random Forest Model Accuracy:", model_results['rf_accuracy'])
+        print("Random Forest Classification Report:\n", model_results['rf_report'])
+        print("Naive Bayes Model Accuracy:", model_results['nb_accuracy'])
+        print("Naive Bayes Classification Report:\n", model_results['nb_report'])
+
         return redirect(url_for('dashboard'))
 
-    return render_template('home.html', form=form , chart_exists=False)
+    return render_template('home.html', form=form, chart_exists=False)
+
+# Route for the home page after login
+
+# @app.route('/home', methods=['GET', 'POST'])
+# def home():
+#     form = UploadForm()
+#     if form.validate_on_submit():  # Ensure form validation and CSRF protection
+#         file = request.files['file']
+        
+             
+#     if request.method == 'POST':
+#         if 'clear' in request.form:
+#             if form.validate_on_submit():
+#                 if os.path.exists(ANALYZED_DATA_PATH):
+#                     os.remove(ANALYZED_DATA_PATH)
+#                     print("Removed analyzed_reviews.csv")
+#                 if os.path.exists(CHART_PATH):
+#                     os.remove(CHART_PATH)
+#                     print("Removed sentiment_chart.png")
+#                 return render_template('home.html', chart_exists=False)
+
+#         if 'file' not in request.files:
+#             flash('No file selected.', 'error')
+#             return redirect(request.url)
+
+#         file = request.files['file']
+#         if not file:
+#             flash('No file selected.', 'error')
+#             return redirect(request.url)
+
+#         try:
+#             df = pd.read_csv(file)
+#             print(df.head())  # Check the DataFrame
+#         except Exception as e:
+#             flash(f"Error processing the file: {str(e)}", 'error')
+#             return redirect(request.url)
+
+#         # Dynamically find the rating column
+#         rating_column = None
+#         possible_rating_columns = ['rating', 'score', 'stars']
+#         for col in df.columns:
+#             if col.lower() in possible_rating_columns:
+#                 rating_column = col
+#                 print(f"Detected rating column: {rating_column}")  # Debugging statement
+#                 break
+
+#         if rating_column is None:
+#             flash("Could not find a rating column in the dataset.", 'error')
+#             return render_template('home.html')
+
+#         if 'reviews' not in df.columns:
+#             flash("The dataset must contain a 'reviews' column.", 'error')
+#             return render_template('home.html')
+
+#         # Preprocessing and sentiment analysis
+#         df = df.drop_duplicates()
+#         df = df.dropna(subset=['reviews'])
+#         df['reviews'] = df['reviews'].apply(preprocess_text)
+#         df['Sentiment'] = df['reviews'].apply(analyze_sentiment)
+#         df['Emotion'] = df['Sentiment'].apply(assign_emotion)
+
+#         # Use the identified rating column
+#         df['rating'] = df[rating_column]
+#         df.to_csv(ANALYZED_DATA_PATH, index=False)
+
+#         # Generate sentiment counts and chart as before...
+#         # ...
+#         return redirect(url_for('dashboard'))
+
+#     return render_template('home.html', form=form , chart_exists=False)
 
 # Route for the about page
 @app.route('/about')
@@ -330,6 +410,9 @@ def logout():
     session.pop('username', None)
     flash('You have been logged out.', 'success')
     return redirect(url_for('intro'))
+
+
+        
 
 if __name__ == '__main__':
     app.run(debug=True)
