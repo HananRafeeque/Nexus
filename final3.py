@@ -1,5 +1,3 @@
-#updated
-
 import os
 from flask import Flask, render_template, request, redirect, send_file, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
