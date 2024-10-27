@@ -270,75 +270,6 @@ def home():
 
     return render_template('home.html', form=form, chart_exists=False)
 
-# Route for the home page after login
-
-# @app.route('/home', methods=['GET', 'POST'])
-# def home():
-#     form = UploadForm()
-#     if form.validate_on_submit():  # Ensure form validation and CSRF protection
-#         file = request.files['file']
-        
-             
-#     if request.method == 'POST':
-#         if 'clear' in request.form:
-#             if form.validate_on_submit():
-#                 if os.path.exists(ANALYZED_DATA_PATH):
-#                     os.remove(ANALYZED_DATA_PATH)
-#                     print("Removed analyzed_reviews.csv")
-#                 if os.path.exists(CHART_PATH):
-#                     os.remove(CHART_PATH)
-#                     print("Removed sentiment_chart.png")
-#                 return render_template('home.html', chart_exists=False)
-
-#         if 'file' not in request.files:
-#             flash('No file selected.', 'error')
-#             return redirect(request.url)
-
-#         file = request.files['file']
-#         if not file:
-#             flash('No file selected.', 'error')
-#             return redirect(request.url)
-
-#         try:
-#             df = pd.read_csv(file)
-#             print(df.head())  # Check the DataFrame
-#         except Exception as e:
-#             flash(f"Error processing the file: {str(e)}", 'error')
-#             return redirect(request.url)
-
-#         # Dynamically find the rating column
-#         rating_column = None
-#         possible_rating_columns = ['rating', 'score', 'stars']
-#         for col in df.columns:
-#             if col.lower() in possible_rating_columns:
-#                 rating_column = col
-#                 print(f"Detected rating column: {rating_column}")  # Debugging statement
-#                 break
-
-#         if rating_column is None:
-#             flash("Could not find a rating column in the dataset.", 'error')
-#             return render_template('home.html')
-
-#         if 'reviews' not in df.columns:
-#             flash("The dataset must contain a 'reviews' column.", 'error')
-#             return render_template('home.html')
-
-#         # Preprocessing and sentiment analysis
-#         df = df.drop_duplicates()
-#         df = df.dropna(subset=['reviews'])
-#         df['reviews'] = df['reviews'].apply(preprocess_text)
-#         df['Sentiment'] = df['reviews'].apply(analyze_sentiment)
-#         df['Emotion'] = df['Sentiment'].apply(assign_emotion)
-
-#         # Use the identified rating column
-#         df['rating'] = df[rating_column]
-#         df.to_csv(ANALYZED_DATA_PATH, index=False)
-
-#         # Generate sentiment counts and chart as before...
-#         # ...
-#         return redirect(url_for('dashboard'))
-
-#     return render_template('home.html', form=form , chart_exists=False)
 
 # Route for the about page
 @app.route('/about')
@@ -350,20 +281,6 @@ def about():
 def team():
     return render_template('team.html')
 
-# @app.route('/dashboard')
-# def dashboard():
-#     if os.path.exists(ANALYZED_DATA_PATH):
-#         df = pd.read_csv(ANALYZED_DATA_PATH)
-
-#         # Prepare the reviews for display
-#         reviews = df.to_dict(orient='records')
-
-#         # Check if there's a chart generated
-#         chart_exists = os.path.exists(CHART_PATH)
-
-#         return render_template('dashboard.html', chart_exists=chart_exists, reviews=reviews)
-#     else:
-#         return render_template('dashboard.html', chart_exists=False, reviews=[])
 
 @app.route('/dashboard')
 def dashboard():
