@@ -1,24 +1,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rubik+Wet+Paint&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Bebas+Neue&family=Rubik+Wet+Paint&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Sora:wght@100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Montserrat:ital,wght@0,500;1,500&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&family=Sora:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Asul:wght@400;700&display=swap');
 
 *{
-    margin-left: .5rem;
+    margin: .5rem;
 
 }
 body{
-    background-color: #181e4f;
-    color: white;
+    background-color: #fff;
+    color: #081158;
 }
 li{
     margin-left: 1.5rem;
 }
 .head h1{
-    font-family: "Rubik Wet Paint", system-ui;
+    /* font-family: Arial, sans-serif;
     font-weight: 400;
+    font-style: normal; */
+    padding-top: 2rem;
+    font-size: 4rem;
+    font-family: "Asul", serif;
+    font-weight: 700;
     font-style: normal;
-    font-size: 3.5rem;
 }
-.im{
+/* .im{
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -29,28 +36,58 @@ li{
     scale: 1.2;
     transition: 1s ease-in-out;
 }
-
 .im img{
     width: 25rem;
     height: 15rem;
-}
-.welcome{
-    margin-top: 8rem;
-}
+} */
+
 .w1{
+    margin: 3rem 5rem;
     display: flex;
     flex-direction: row;
-}
-.w1 p{
-    font-size: 1.2rem;
-    margin-left: 3rem;
-    font-family: "Amiri", serif;
-    font-weight: 400;
-    font-style: normal;
+    justify-content: space-around;
+    gap: 5rem;
 }
 .w1 img{
-    width: 25rem;
-    margin-right: 3rem;
+    height: 63rem;
+    border-radius: 10px;
+}
+.desc h2{
+    font-family: "Open Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+    "wdth" 100;  
+    font-size: 72px;
+    align-content: center;
+}
+.desc p, button{
+    font-family: "Red Hat Display", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.7rem;
+    line-height: 3rem;
+}
+.desc a{
+    text-decoration: none;
+    color: #fff;
+}
+.desc button{
+    background-color: #171f5c; /* Dark Slate Blue */
+    color: #ffffff; /* White text */
+    padding: 17px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin: 2rem 0;
+    font-size: 1.5rem;
+}
+.desc button:hover{
+    background-color: #08115893; /* Lightened Slate Blue */
+    transform: scale(1.05); /* Slightly enlarge */
 }
 
 .head a{
@@ -61,16 +98,28 @@ li{
     font-size: 1.1rem;
 }
 
-.tech li{
+/* .tech li{
     margin: 1rem;
-}
+} */
 
-.key{
+.card{
     margin-top: 3rem;
+    color: #fff;
+    background-color: #081158;
+    font-family: "Red Hat Display", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    margin: 0 -2rem;
+    display: flex;
+    font-size: 1.7rem;
+    list-style-type: none;
 }
 
-.key ul{
-    font-size: 1.3rem;
+.card li{
+    padding: 1rem;
+    margin: 2rem;
+    width: 25%;
 }
 
 .follow ul{
