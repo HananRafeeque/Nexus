@@ -22,7 +22,6 @@ from forms import RegistrationForm, UploadForm
 from forms import LoginForm
 
 
-
 app = Flask(__name__)
 app.secret_key = 'N3X65'  #  The secret key
 
