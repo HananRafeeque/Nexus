@@ -1,18 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMO5o9z8z6E0Ig5CMmW3G5VoqRX5XaYu+h+5tJ" crossorigin="anonymous">
-    <link rel="stylesheet" href="/static/styles/register.css">
-
-</head>
-<body>
-    <nav>
-        <img src="/static/images/nexus-removebg-preview.png" alt="">
-        <h1>Nexus</h1>
-    </nav>
+{% extends 'intro.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
 
     <div class="register">
         <h2>Register</h2>
@@ -33,5 +21,77 @@
             <a href="/">go to home</a>
         </div>
     </div>
-</body>
-</html>
+
+    
+<style>
+    .register {
+    background-color: white; /* Consistent with your theme */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 23rem !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 15rem;
+    margin-top: 5%;
+}
+
+h2 {
+    text-align: center;
+    color: #081158; /* Heading color */
+    margin-bottom: 20px;
+}
+
+.ele {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+input {
+    width: 20rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+}
+
+button {
+    width: 20rem;
+    background-color: #ffca01; /* Button color consistent with your theme */
+    color: #10143a; /* Dark text color for contrast */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #ac8600; /* Darker shade for hover effect */
+}
+
+.login-link, .register-link {
+    text-align: center;
+    margin-top: 15px;
+    color: #ffffff; /* Link text color */
+}
+
+.login-link a, .register-link a {
+    color: #ffca01; /* Link color */
+    text-decoration: none; /* No underline */
+}
+
+.login-link a:hover, .register-link a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+.goto a {
+    color: #081158; /* Color consistent with theme */
+    text-decoration: none;
+}
+
+.goto a:hover {
+    text-decoration: underline;
+}
+</style>
+{% endblock %}

@@ -45,7 +45,7 @@ li{
     margin: 3rem 5rem;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    /* justify-content: space-around; */
     gap: 5rem;
 }
 .w1 img{
@@ -102,8 +102,8 @@ li{
     margin: 1rem;
 } */
 
-.card{
-    margin-top: 3rem;
+.keys{
+    margin-top: 3rem    ;
     color: #fff;
     background-color: #081158;
     font-family: "Red Hat Display", sans-serif;
