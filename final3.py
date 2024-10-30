@@ -1,5 +1,7 @@
 import os
 from flask import Flask, render_template, request, redirect, send_file, url_for, session, flash
+from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin, current_user
+from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 import pandas as pd
@@ -26,6 +28,8 @@ app = Flask(__name__)
 app.secret_key = 'N3X65'  #  The secret key
 
 csrf = CSRFProtect(app)  # Enabled CSRF protection
+login_manager = LoginManager(app)  # Initialize LoginManager
+login_manager.login_view = 'login'  # Set login view for unauthorized access redirection
 
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -44,11 +48,16 @@ nlp = spacy.load('en_core_web_sm')
 stop_words_nltk = set(stopwords.words('english'))
 
 # User model
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), nullable=False, unique=True)
     email = db.Column(db.String(150), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
+
+    # User loader
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 # Create database tables if they don't exist
 with app.app_context():
@@ -181,8 +190,7 @@ def login():
         # Check if user exists
         user = User.query.filter_by(username=username).first()
         if user and bcrypt.check_password_hash(user.password, password):
-            session['user_id'] = user.id
-            session['username'] = user.username
+            login_user(user)  
             flash('Login successful!', 'success')
             return redirect(url_for('home'))
         else:
@@ -194,6 +202,7 @@ def login():
 
 
 @app.route('/home', methods=['GET', 'POST'])
+@login_required
 def home():
     form = UploadForm()
     if form.validate_on_submit():  # Ensure form validation and CSRF protection
@@ -272,16 +281,19 @@ def home():
 
 # Route for the about page
 @app.route('/about')
+@login_required
 def about():
     return render_template('about.html')
 
 # Route for the team page
 @app.route('/team')
+@login_required
 def team():
     return render_template('team.html')
 
 
 @app.route('/dashboard')
+@login_required
 def dashboard():
     if os.path.exists(ANALYZED_DATA_PATH):
         df = pd.read_csv(ANALYZED_DATA_PATH)
@@ -307,12 +319,14 @@ def dashboard():
 
 
 @app.route('/download')
+@login_required
 def download_file():
     if os.path.exists(ANALYZED_DATA_PATH):
         return send_file(ANALYZED_DATA_PATH, as_attachment=True)
     return "No file to download."
 
 @app.route('/download_chart')
+@login_required
 def download_chart():
     if os.path.exists(CHART_PATH):
         return send_file(CHART_PATH, as_attachment=True)
@@ -322,9 +336,8 @@ def download_chart():
 # Route for logging out
 @app.route('/logout')
 def logout():
-    session.pop('user_id', None)
-    session.pop('username', None)
-    flash('You have been logged out.', 'success')
+    logout_user()  # Log the user out using Flask-Login.
+    flash('You have been logged out.', 'success')  # Flash a success message
     return redirect(url_for('intro'))
 
 
