@@ -23,6 +23,9 @@ from flask_wtf.csrf import CSRFProtect
 from forms import RegistrationForm, UploadForm
 from forms import LoginForm
 
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
+
 
 app = Flask(__name__)
 app.secret_key = 'N3X65'  #  The secret key
@@ -98,6 +101,10 @@ if os.path.exists(ANALYZED_DATA_PATH):
 if os.path.exists(CHART_PATH):
     os.remove(CHART_PATH)
 
+SVM_CM_PATH = os.path.join('static', 'svm_confusion_matrix.png')
+RF_CM_PATH = os.path.join('static', 'rf_confusion_matrix.png')
+NB_CM_PATH = os.path.join('static', 'nb_confusion_matrix.png')
+
 # Function to train and evaluate models
 def train_and_evaluate_models(df):
     text = df['reviews'].values
@@ -118,6 +125,15 @@ def train_and_evaluate_models(df):
     svm_predictions = svm.predict(svm_features_test)
     svm_accuracy = accuracy_score(labels_test, svm_predictions)
 
+    # Generate and save SVM confusion matrix
+    conf_matrix_svm = confusion_matrix(labels_test, svm_predictions)
+    disp_svm = ConfusionMatrixDisplay(confusion_matrix=conf_matrix_svm)
+    disp_svm.plot(cmap="Blues")
+    plt.title("SVM Confusion Matrix")
+    plt.savefig(SVM_CM_PATH)
+    plt.close()
+
+
     # Random Forest Model
     rf_vectorizer = TfidfVectorizer(max_features=5000)
     X_train_tfidf = rf_vectorizer.fit_transform(text_train)
@@ -126,6 +142,14 @@ def train_and_evaluate_models(df):
     rf_model.fit(X_train_tfidf, labels_train)
     rf_pred = rf_model.predict(X_test_tfidf)
     rf_accuracy = accuracy_score(labels_test, rf_pred)
+
+    # Generate and save Random Forest confusion matrix
+    conf_matrix_rf = confusion_matrix(labels_test, rf_pred)
+    disp_rf = ConfusionMatrixDisplay(confusion_matrix=conf_matrix_rf)
+    disp_rf.plot(cmap="Purples")
+    plt.title("Random Forest Confusion Matrix")
+    plt.savefig(RF_CM_PATH)
+    plt.close()
     
 
     # Naive Bayes Model
@@ -137,6 +161,14 @@ def train_and_evaluate_models(df):
     nb_predictions = nb.predict(nb_features_test)
     nb_accuracy = accuracy_score(labels_test, nb_predictions)
 
+    # Generate and save Naive Bayes confusion matrix
+    conf_matrix_nb = confusion_matrix(labels_test, nb_predictions)
+    disp_nb = ConfusionMatrixDisplay(confusion_matrix=conf_matrix_nb)
+    disp_nb.plot(cmap="Greens")
+    plt.title("Naive Bayes Confusion Matrix")
+    plt.savefig(NB_CM_PATH)
+    plt.close()
+
     # Return model performances
     return {
         'svm_accuracy': svm_accuracy,
@@ -145,6 +177,10 @@ def train_and_evaluate_models(df):
         'svm_report': classification_report(labels_test, svm_predictions),
         'rf_report': classification_report(labels_test, rf_pred),
         'nb_report': classification_report(labels_test, nb_predictions),
+
+        'svm_cm_path': SVM_CM_PATH,
+        'rf_cm_path': RF_CM_PATH,
+        'nb_cm_path': NB_CM_PATH,
     }
     
 
@@ -156,6 +192,7 @@ def intro():
 # Route for the registration page
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    
     form = RegistrationForm()
     if form.validate_on_submit():  # Tohandle form validation and CSRF protection
         username = form.username.data
