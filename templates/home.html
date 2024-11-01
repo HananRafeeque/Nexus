@@ -1,7 +1,10 @@
 {% extends 'layout.html' %}
 {% block title %}Home{% endblock %}
 {% block content %}
-<h2>Upload Dataset for Analysis</h2>
+<div class="head">
+    <h2>Upload Dataset for Analysis</h2>
+    <h2><img src="/static/images/profile.png" alt=""> {{ username }}</h2>
+</div>
 <form class="upload" action="{{ url_for('home') }}" method="post" enctype="multipart/form-data">
     {{ form.hidden_tag() }} 
     {{ form.file }}  <button type="submit" class="btn btn-primary">Upload</button>
@@ -40,6 +43,15 @@
         color: #ffca01; /* Customize the link color */
         text-decoration: underline; /* Make links more noticeable */
         text-decoration: none;
+    }
+    .head{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .head img{
+        width: 3rem;
+        border-radius: 50%;
     }
 </style>
 {% endblock %}

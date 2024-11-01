@@ -1,99 +1,39 @@
-{% extends 'intro.html' %}
-{% block title %}Home{% endblock %}
-{% block content %}
-
-    <div class="login">
-        <h2>Login</h2>
-        <form method="POST" action="{{ url_for('login') }}">
-            {{ form.hidden_tag() }}  <!-- CSRF token for security -->
-
-            <div class="ele">
-                <input type="text" name="username" placeholder="Username" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <button type="submit">Login</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/styles/styles.css">
+</head>
+<body>
+    
+    <div class="main">
+        <center>
+            <h1>
+                Sentiment Analysis of Customer Reviews
+            </h1>
+        </center>
+        <div class="login">
+            <h2>Login</h2>
+            <form method="POST" action="{{ url_for('login') }}">
+                {{ form.hidden_tag() }}  <!-- CSRF token for security -->
+    
+                <div class="ele">
+                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </div>
+            </form>
+            <div class="register-link">
+                <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+                <div class="forgot">
+                    <a href="/">Forgot password?</a>
+                    <a href="/">go to home?</a>
+                </div>
             </div>
-        </form>
-        <div class="register-link">
-            <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
-        </div>
-        <div class="goto">
-            <a href="/">go to home</a>
+
         </div>
     </div>
-
-
-    <style>
-
-
-.login {
-    background-color: white; /* Consistent with your theme */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    width: 23rem !important;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-left: 15rem;
-    margin-top: 5%;
-    
-}
-h2 {
-    text-align: center;
-    color: #081158; /* White text for the heading */
-    margin-bottom: 20px;
-}
-.ele{
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
-}
-input{
-    width: 20rem;
-    height: 2rem;
-    border-radius: .5rem;
-}
-
-
-nav{
-    color: #081158;
-    font-size: 1.5rem;
-    font-weight: bold !important;
-    margin-left: 2rem;
-    display: flex;
-    flex-direction: row;
-}
-nav img{
-    width: 5rem;
-}
-
-
-
-button {
-    width: 20rem;
-    /* padding: 10px; */
-    background-color: #ffca01; /* Button color consistent with your theme */
-    color: #10143a; /* Dark text color for contrast */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-button:hover {
-    background-color: #ac8600; /* Darker shade for hover effect */
-}
-.register-link {
-    text-align: center;
-    margin-top: 15px;
-    color: #ffffff; /* White text for the link */
-}
-.register-link a {
-    color: #ffca01; /* Link color */
-    text-decoration: none; /* No underline */
-}
-.register-link a:hover {
-    text-decoration: underline; /* Underline on hover */
-}
-    </style>
-{% endblock %}
+</body>
+</html>

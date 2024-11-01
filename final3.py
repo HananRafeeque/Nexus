@@ -22,6 +22,8 @@ from sklearn.naive_bayes import MultinomialNB
 from flask_wtf.csrf import CSRFProtect
 from forms import RegistrationForm, UploadForm
 from forms import LoginForm
+from flask_login import current_user
+
 
 
 app = Flask(__name__)
@@ -179,9 +181,20 @@ def register():
     
     return render_template('register.html',form=form)
 
+
+def clear_analyzed_data():
+    """Removes previous analyzed data and chart files if they exist."""
+    if os.path.exists(ANALYZED_DATA_PATH):
+        os.remove(ANALYZED_DATA_PATH)
+    if os.path.exists(CHART_PATH):
+        os.remove(CHART_PATH)
+
+
+
 # Route for the login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    clear_analyzed_data()
     form = LoginForm()
     if form.validate_on_submit():  # to use Flask-WTF's form validation and CSRF protection
         username = form.username.data  # to access form data via Flask-WTF
@@ -206,19 +219,22 @@ def login():
 def home():
     form = UploadForm()
     if form.validate_on_submit():  # Ensure form validation and CSRF protection
-        file = request.files['file']
-        
-    if request.method == 'POST':
-        if 'clear' in request.form:
-            if form.validate_on_submit():
-                if os.path.exists(ANALYZED_DATA_PATH):
-                    os.remove(ANALYZED_DATA_PATH)
-                    print("Removed analyzed_reviews.csv")
-                if os.path.exists(CHART_PATH):
-                    os.remove(CHART_PATH)
-                    print("Removed sentiment_chart.png")
-                return render_template('home.html', chart_exists=False)
+        file = request.files.get('file')
 
+    if request.method == 'POST':
+        # Clear button check
+        if 'clear' in request.form:
+            # Remove analyzed dataset and chart files if they exist
+            if os.path.exists(ANALYZED_DATA_PATH):
+                os.remove(ANALYZED_DATA_PATH)
+                print("Removed analyzed_reviews.csv")
+            if os.path.exists(CHART_PATH):
+                os.remove(CHART_PATH)
+                print("Removed sentiment_chart.png")
+            flash('Data cleared successfully.', 'success')
+            return render_template('home.html', form=form, chart_exists=False)
+
+        # File upload processing
         if 'file' not in request.files:
             flash('No file selected.', 'error')
             return redirect(request.url)
@@ -246,11 +262,11 @@ def home():
 
         if rating_column is None:
             flash("Could not find a rating column in the dataset.", 'error')
-            return render_template('home.html')
+            return render_template('home.html', form=form)
 
         if 'reviews' not in df.columns:
             flash("The dataset must contain a 'reviews' column.", 'error')
-            return render_template('home.html')
+            return render_template('home.html', form=form)
 
         # Preprocessing and sentiment analysis
         df = df.drop_duplicates()
@@ -276,7 +292,7 @@ def home():
 
         return redirect(url_for('dashboard'))
 
-    return render_template('home.html', form=form, chart_exists=False)
+    return render_template('home.html', form=form, chart_exists=False, username=current_user.username)
 
 
 # Route for the about page
@@ -338,7 +354,7 @@ def download_chart():
 def logout():
     logout_user()  # Log the user out using Flask-Login.
     flash('You have been logged out.', 'success')  # Flash a success message
-    return redirect(url_for('intro'))
+    return redirect(url_for('login'))
 
 
         
