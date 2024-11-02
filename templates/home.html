@@ -5,20 +5,42 @@
     <h2>Upload Dataset for Analysis</h2>
     <h2><img src="/static/images/profile.png" alt=""> {{ username }}</h2>
 </div>
+
+<!-- File upload form -->
 <form class="upload" action="{{ url_for('home') }}" method="post" enctype="multipart/form-data">
     {{ form.hidden_tag() }} 
-    {{ form.file }}  <button type="submit" class="btn btn-primary">Upload</button>
-    <!-- {{ form.submit }}   -->
+    {{ form.file }}  
+    <button type="submit" class="btn btn-primary">Upload</button>
 </form>
 
+<!-- Review textarea for sentiment analysis -->
+<form id="reviewForm" action="{{ url_for('home') }}" method="post">
+    {{ form.hidden_tag() }}  <!-- Include CSRF token here -->
+    <div class="form-group">
+        <label for="reviews">Type your reviews:</label>
+        <textarea id="reviews" name="review" rows="3" cols="40" placeholder="Enter your review here..." class="form-control"></textarea>
+        <button type="submit" class="btn btn-success">Analyze</button>
+    </div>
+</form>
+
+<!-- Display sentiment result directly below the analyze button -->
+{% if sentiment_result %}
+    <div class="alert alert-info" role="alert" style="margin-top: 1rem;">
+        Sentiment: {{ sentiment_result }}
+    </div>
+{% endif %}
+
+<!-- Display error message if any -->
 {% if error_message %}
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger" role="alert" style="margin-top: 1rem;">
         {{ error_message }}
     </div>
 {% endif %}
 
+<!-- Clear data form -->
 <form class="clear" action="{{ url_for('home') }}" method="post">
-    {{ form.hidden_tag() }}  <button type="submit" class="btn btn-danger" name="clear">Clear Data</button>
+    {{ form.hidden_tag() }}  
+    <button type="submit" class="btn btn-danger" name="clear">Clear Data</button>
 </form>
 
 <style>
@@ -41,17 +63,20 @@
     }
     a {
         color: #ffca01; /* Customize the link color */
-        text-decoration: underline; /* Make links more noticeable */
-        text-decoration: none;
+        text-decoration: none; /* Make links more noticeable */
     }
-    .head{
+    .head {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
     }
-    .head img{
+    .head img {
         width: 3rem;
         border-radius: 50%;
+    }
+    .form-group,.form-group button {
+        width: 75rem;
+        margin: .5rem auto; 
     }
 </style>
 {% endblock %}

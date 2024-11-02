@@ -212,16 +212,16 @@ def login():
     
     return render_template('login.html', form=form)
 
-
-
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
     form = UploadForm()
+    sentiment_result = None  # Initialize sentiment_result
+    error_message = None  # Initialize error_message
+
     if form.validate_on_submit():  # Ensure form validation and CSRF protection
         file = request.files.get('file')
 
-    if request.method == 'POST':
         # Clear button check
         if 'clear' in request.form:
             # Remove analyzed dataset and chart files if they exist
@@ -232,7 +232,7 @@ def home():
                 os.remove(CHART_PATH)
                 print("Removed sentiment_chart.png")
             flash('Data cleared successfully.', 'success')
-            return render_template('home.html', form=form, chart_exists=False)
+            return render_template('home.html', form=form, chart_exists=False, username=current_user.username)
 
         # File upload processing
         if 'file' not in request.files:
@@ -290,7 +290,23 @@ def home():
         print("Naive Bayes Model Accuracy:", model_results['nb_accuracy'])
         print("Naive Bayes Classification Report:\n", model_results['nb_report'])
 
+        # Redirect to dashboard after processing
         return redirect(url_for('dashboard'))
+
+    # Review analysis logic
+    if 'review' in request.form:
+        review = request.form['review']
+        blob = TextBlob(review)
+        sentiment = blob.sentiment.polarity
+
+        if sentiment > 0:
+            sentiment_result = 'Positive'
+        elif sentiment < 0:
+            sentiment_result = 'Negative'
+        else:
+            sentiment_result = 'Neutral'
+
+        return render_template('home.html', form=form, sentiment_result=sentiment_result, username=current_user.username)
 
     return render_template('home.html', form=form, chart_exists=False, username=current_user.username)
 
