@@ -165,30 +165,31 @@ li{
 .follow{
     display: flex;
     flex-direction: row;
+    gap: 10rem;
 }
 
 .h{
     display: flex;
     flex-direction: column;
 }
-.follow ul{
+.logo ul{
     display: flex;
     flex-direction: row;
     margin-top: 1.5rem;
 }
-.follow img{
+.logo img{
     width: 2rem;
     align-items: center;
     justify-content: center;
 }
-.follow li{
+.logo li{
     list-style-type: none;
 }
 
 .fol-con{
     display: flex;
     flex-direction: row;
-    gap: 10rem;
+    /* justify-content: space-between; */
 }
 
 .footer{
@@ -198,7 +199,21 @@ li{
     justify-content: center;    
 }
 
+.con-us{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+.follow{
+    margin: 2rem;
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-between !important; */
+    gap: 40rem !important;
+}
 
 .contact{
-    margin: 2rem;
+    padding: 2rem;
 }
