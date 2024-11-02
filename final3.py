@@ -150,6 +150,26 @@ def train_and_evaluate_models(df):
     }
     
 
+
+#code for clear data
+@app.route('/clear_data', methods=['POST'])
+@login_required
+def clear_data():
+    # Delete the analyzed data file if it exists
+    if os.path.exists(ANALYZED_DATA_PATH):
+        os.remove(ANALYZED_DATA_PATH)
+        flash("Analyzed data cleared successfully.", "success")
+
+    # Delete the chart image if it exists
+    if os.path.exists(CHART_PATH):
+        os.remove(CHART_PATH)
+        flash("Chart cleared successfully.", "success")
+
+    # Redirect back to the dashboard
+    return redirect(url_for('home'))
+
+
+
 # Route for the homepage
 @app.route('/')
 def intro():

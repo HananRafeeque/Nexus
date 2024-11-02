@@ -7,11 +7,13 @@
 </div>
 
 <!-- File upload form -->
-<form class="upload" action="{{ url_for('home') }}" method="post" enctype="multipart/form-data">
-    {{ form.hidden_tag() }} 
-    {{ form.file }}  
-    <button type="submit" class="btn btn-primary">Upload</button>
-</form>
+    <center>
+        <form class="upload" action="{{ url_for('home') }}" method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }} 
+            {{ form.file }}  
+            <button type="submit" class="btn btn-outline-primary">Upload</button>
+        </form>
+    </center>
 
 <!-- Review textarea for sentiment analysis -->
 <form id="reviewForm" action="{{ url_for('home') }}" method="post">
@@ -19,7 +21,7 @@
     <div class="form-group">
         <label for="reviews">Type your reviews:</label>
         <textarea id="reviews" name="review" rows="3" cols="40" placeholder="Enter your review here..." class="form-control"></textarea>
-        <button type="submit" class="btn btn-success">Analyze</button>
+        <button type="submit" class="btn btn-outline-success">Analyze</button>
     </div>
 </form>
 
@@ -38,7 +40,7 @@
 {% endif %}
 
 <!-- Clear data form -->
-<form class="clear" action="{{ url_for('home') }}" method="post">
+<form class="clear" action="{{ url_for('clear_data') }}" method="post">
     {{ form.hidden_tag() }}  
     <button type="submit" class="btn btn-danger" name="clear">Clear Data</button>
 </form>
@@ -53,8 +55,20 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 10rem;
+        gap: 40rem;
         margin-top: 10rem;
+        /* border: 1px solid white; */
+        height: 6rem !important;
+        width: 75rem !important;
+        border-radius: 1rem;
+        
+    }
+    .upload button{
+        width: 10rem;
+        height: 3rem;
+    }
+    .upload img{
+        width: 2rem;
     }
     .clear {
         margin-top: 5rem;
