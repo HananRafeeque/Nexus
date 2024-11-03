@@ -16,7 +16,7 @@
         </center>
         <div class="login">
             <h2>Login</h2>
-            <form method="POST" action="{{ url_for('login') }}">
+            <form method="POST" action="{{ url_for('login') }}" autocomplete="off">
                 {{ form.hidden_tag() }}  <!-- CSRF token for security -->
     
                 <div class="ele">
