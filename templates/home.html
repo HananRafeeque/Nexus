@@ -6,6 +6,17 @@
     <h2><img src="/static/images/profile.png" alt=""> {{ username }}</h2>
 </div>
 
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+  <ul class="flashes">
+    {% for category, message in messages %}
+      <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+{% endwith %}
+
+
 <!-- File upload form -->
     <center>
         <form class="upload" action="{{ url_for('home') }}" method="post" enctype="multipart/form-data">
@@ -24,6 +35,8 @@
         <button type="submit" class="btn btn-outline-success">Analyze</button>
     </div>
 </form>
+
+
 
 <!-- Display sentiment result directly below the analyze button -->
 {% if sentiment_result %}
@@ -79,6 +92,12 @@
         color: #ffca01; /* Customize the link color */
         text-decoration: none; /* Make links more noticeable */
     }
+
+    .flashes{
+            list-style-type: none !important;
+            color: red !important;
+            font-weight: bold !important;
+        }
     .head {
         display: flex;
         flex-direction: row;

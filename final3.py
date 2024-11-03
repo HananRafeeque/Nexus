@@ -196,7 +196,7 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         
-        flash('Registration successful! You can now log in.', 'success')
+        flash('Registration  successful! You can log-in now.', 'success')
         return redirect(url_for('login'))
     
     return render_template('register.html',form=form)
@@ -394,7 +394,7 @@ def download_chart():
 @app.route('/logout')
 def logout():
     logout_user()  # Log the user out using Flask-Login.
-    flash('You have been logged out.', 'success')  # Flash a success message
+    flash('You have been logged-out.', 'success')  # Flash a success message
     return redirect(url_for('login'))
 
 
