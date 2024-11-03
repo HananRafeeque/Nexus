@@ -343,7 +343,6 @@ def about():
 def team():
     return render_template('team.html')
 
-
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -359,15 +358,21 @@ def dashboard():
         negative_reviews = len(df[df['Sentiment'] == 'Negative'])
         neutral_reviews = len(df[df['Sentiment'] == 'Neutral'])
 
+        # Find top positive and top negative reviews if they exist
+        top_positive = df[df['Sentiment'] == 'Positive']['reviews'].mode().iloc[0] if positive_reviews > 0 else "None"
+        top_negative = df[df['Sentiment'] == 'Negative']['reviews'].mode().iloc[0] if negative_reviews > 0 else "None"
+
         # Check if there's a chart generated
         chart_exists = os.path.exists(CHART_PATH)
 
         return render_template('dashboard.html', chart_exists=chart_exists, reviews=reviews,
                                total_reviews=total_reviews, positive_reviews=positive_reviews,
-                               negative_reviews=negative_reviews,neutral_reviews=neutral_reviews)
+                               negative_reviews=negative_reviews, neutral_reviews=neutral_reviews,
+                               top_positive=top_positive, top_negative=top_negative)
     else:
-        return render_template('dashboard.html', chart_exists=False, reviews=[], total_reviews=0, positive_reviews=0, negative_reviews=0, neutral_reviews=0)
-
+        return render_template('dashboard.html', chart_exists=False, reviews=[], total_reviews=0,
+                               positive_reviews=0, negative_reviews=0, neutral_reviews=0,
+                               top_positive="None", top_negative="None")
 
 
 @app.route('/download')

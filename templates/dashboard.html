@@ -108,6 +108,26 @@
             color: white ;
             margin-top: -4rem !important;
         }
+        .top{
+            display: flex;
+            flex-direction: row;
+            gap: 8rem;
+        }
+        .top p{
+            width: 35rem;
+            overflow-y: scroll;
+            border: 1px solid white;
+            height: 6rem;
+            border-radius: 1rem;
+            padding: 1rem;
+            text-align: center;
+        }
+        .top p:hover{
+            background-color: #fff;
+            color: black;
+            transition: .5s ease-in-out;
+            scale: 1.1;
+        }
 
     </style>
 
@@ -119,6 +139,11 @@
             <p><strong>Positive Reviews:</strong> {{ positive_reviews }}</p>
             <p><strong>Negative Reviews:</strong> {{ negative_reviews }}</p>
             <p><strong>Neutral Reviews:</strong> {{ neutral_reviews }}</p>
+
+        </div>
+        <div class="top">
+            <p><strong>Top Positive Review:</strong> <br>{{ top_positive }}</p>
+            <p><strong>Top Negative Review:</strong> <br>{{ top_negative }}</p>
         </div>
 
         <!-- Chart.js charts -->
