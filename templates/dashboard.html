@@ -17,6 +17,9 @@
     {% endwith %}
 
     <style>
+        h2{
+            color: #004792;
+        }
         .flashes{
             list-style-type: none !important;
             color: red !important;
@@ -28,13 +31,14 @@
             margin-bottom: 1rem;
         }
         .review-counts p {
-            border: solid 1px #fff !important;
+            border: solid 1px #000 !important;
             padding: 1rem;
             border-radius: 10px;
+            color: #000;
         }
         .review-counts p:hover {
-            background-color: #fff;
-            color: black;
+            background-color: #000;
+            color: #fff;
             transition: .5s ease-in-out;
             scale: 1.1;
         }
@@ -42,8 +46,8 @@
             position: relative;
             height: 300px;
             overflow-y: auto;
-            margin: 2rem;
-            border: solid 1px #fff;
+            margin: 5rem 2rem;
+            border: solid 1px #004792;
             scrollbar-color: #888 #333 !important;
             scrollbar-width: thin !important;
             border-radius: 2px;
@@ -55,13 +59,19 @@
         thead {
             position: sticky;
             top: 0;
-            background-color: #333;
+            background-color: #004792;
             z-index: 10;
         }
         th, td {
-            border: 2px solid rgb(255, 255, 255);
+            border: 2px solid #004792;
             padding: 8px;
             text-align: left;
+        }
+        th{
+            color: #fff;
+        }
+        td{
+            color: #000;
         }
         /* Loading styles */
         .loading {
@@ -73,7 +83,7 @@
             bottom: 0;
             background: rgba(0, 0, 0, 0.7);
             z-index: 9999;
-            color: white;
+            color: rgb(0, 0, 0);
             text-align: center;
             padding-top: 20%;
             font-size: 24px; /* Adjust font size */
@@ -127,12 +137,14 @@
         .top{
             display: flex;
             flex-direction: row;
+            justify-content: center;
             gap: 8rem;
+            color: #000;
         }
         .top p{
-            width: 35rem;
+            width: 25rem;
             overflow-y: scroll;
-            border: 1px solid white;
+            border: 1px solid #000;
             height: 6rem;
             border-radius: 1rem;
             padding: 1rem;

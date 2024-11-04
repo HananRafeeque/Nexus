@@ -13,38 +13,53 @@ body{
     color: #081158;
     margin-left: 2rem;
 }
-li{
-    margin-left: 1.5rem;
-}
 
-.senti {
-    overflow: hidden; /* Ensures the content is not revealed until the animation */
-    white-space: nowrap; /* Keeps the content on a single line */
-    border-right: 2px solid; /* The typewriter cursor */
-    width: 0; /* Starts with zero width */
-    animation: typing 3.5s steps(30, end) infinite alternate; /* Continuous typing animation */
-    
-}
+
+/* .senti {
+    overflow: hidden; 
+    white-space: nowrap;
+    border-right: 2px solid;
+    width: 0;
+    animation: typing 3.5s steps(30, end) infinite alternate;
+} */
 
 /* The typing effect */
 @keyframes typing {
-    0% { width: 0; } /* Start with no width */
-    100% { width: 65%; } /* Full width at the end */
+    0% { width: 0; } 
+    100% { width: 65%; }
 }
 
 /* Blinking cursor */
-@keyframes blink-caret {
-    from, to { border-color: transparent; } /* Cursor invisible */
-    50% { border-color: rgb(0, 0, 0); } /* Cursor visible */
+/* @keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: rgb(0, 0, 0); }
 }
 
 .blinking-caret {
-    display: inline-block; /* To align with the text */
-    animation: blink-caret 0.75s step-end infinite; /* Blinking animation */
-    position: relative; /* Allow positioning relative to text */
-    margin-left: -2px; /* Adjust the caret position if necessary */
+    display: inline-block;
+    animation: blink-caret 0.75s step-end infinite;
+    position: relative; 
+    margin-left: -2px;
     
+} */
+
+/* Fade out the text after typing */
+@keyframes fade {
+    from { opacity: 1; }
+    to { opacity: 0; }
 }
+
+.senti {
+    display: inline-block;
+    overflow: hidden; /* Ensures text is hidden initially */
+    white-space: nowrap; /* Prevents text from wrapping */
+    border-right: 0; /* Remove cursor effect */
+    animation: typing 2s steps(50, end) infinite; /* Typing animation */
+    font-weight: bold;
+    color: #000000;
+    font-size: 2em; /* Adjust font size as needed */
+}
+
 
 
 
@@ -76,7 +91,7 @@ li{
 } */
 
 .w1{
-    margin: 3rem 5rem;
+    margin: 3rem 5rem 0;
     display: flex;
     flex-direction: row;
     /* justify-content: space-around; */
@@ -84,7 +99,7 @@ li{
     height: 75vh;
 }
 .w1 img{
-    height: 35rem;
+    height: 40rem;
     border-radius: 10px;
 }
 .desc h2{
@@ -140,7 +155,7 @@ li{
 
 
 .keys{
-    margin-top: 3rem    ;
+    margin-top: 1rem;
     color: #fff;
     background-color: #081158;
     font-family: "Red Hat Display", sans-serif;
@@ -148,12 +163,13 @@ li{
     font-weight: 400;
     font-style: normal;
     display: flex;
-    font-size: 1.7rem;
+    font-size: 1.5rem;
     list-style-type: none;
     padding: 2rem;
-
 }
-
+li{
+    margin-left: 4.5rem;
+}
 
 .card li{
     padding: 1rem;
@@ -216,4 +232,15 @@ li{
 
 .contact{
     padding: 2rem;
+}
+
+.btn-success {
+    --bs-btn-bg: #081158 !important;
+    --bs-btn-border-color: #004792 !important;
+    --bs-btn-hover-bg: #004792 !important;
+    --bs-btn-hover-border-color: #004791 !important;
+    --bs-btn-active-bg: #004791 !important;
+    --bs-btn-active-border-color: #004793 !important;
+    --bs-btn-disabled-bg: #005792 !important;
+    --bs-btn-disabled-border-color: #005792 !important;
 }

@@ -25,6 +25,7 @@ body {
     /* width: 100% !important; */
     display: flex;
     flex-direction: column;
+    background-color: #000;
 }
 
 html{

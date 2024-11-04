@@ -2,17 +2,18 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 <div class="head">
-    <h2>Upload Dataset for Analysis</h2>
     <h2><img src="/static/images/profile.png" alt=""> {{ username }}</h2>
 </div>
 
+<h2>Upload Dataset for Analysis</h2>
+
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
-  <ul class="flashes">
+  <!-- <ul class="flashes">
     {% for category, message in messages %}
       <li class="{{ category }}">{{ message }}</li>
     {% endfor %}
-  </ul>
+  </ul> -->
 {% endif %}
 {% endwith %}
 
@@ -24,55 +25,69 @@
             {{ form.file }}  
             <button type="submit" class="btn btn-outline-primary">Upload</button>
         </form>
+        <!-- Clear data form -->
+        <form class="clear" action="{{ url_for('clear_data') }}" method="post">
+            {{ form.hidden_tag() }}  
+            <button type="submit" class="btn btn-danger" name="clear">Clear Data</button>
+        </form>
     </center>
 
 <!-- Review textarea for sentiment analysis -->
-<form id="reviewForm" action="{{ url_for('home') }}" method="post">
-    {{ form.hidden_tag() }}  <!-- Include CSRF token here -->
-    <div class="form-group">
-        <label for="reviews">Type your reviews:</label>
-        <textarea id="reviews" name="review" rows="3" cols="40" placeholder="Enter your review here..." class="form-control"></textarea>
-        <button type="submit" class="btn btn-outline-success">Analyze</button>
-    </div>
-</form>
+<div class="sentiment-box">
+    <form id="reviewForm" action="{{ url_for('home') }}" method="post">
+        {{ form.hidden_tag() }}  <!-- Include CSRF token here -->
+        <div class="form-group">
+            <label for="reviews">Check Sentimence Quickly</label>
+            <textarea id="reviews" name="review" rows="3" cols="40" placeholder="Enter your review here..." class="form-control"></textarea>
+            <button type="submit" class="btn btn-outline-success">Analyze</button>
+        </div>
+    </form>
+    
+    
+    
+    <!-- Display sentiment result directly below the analyze button -->
+    {% if sentiment_result %}
+        <div class="alert alert-info" role="alert" style="margin: 1rem auto; width: 75rem;">
+            Sentiment: {{ sentiment_result }}
+        </div>
+    {% endif %}
+    
+    <!-- Display error message if any -->
+    {% if error_message %}
+        <div class="alert alert-danger" role="alert" style="margin-top: 1rem;">
+            {{ error_message }}
+        </div>
+    {% endif %}
+</div>
 
 
-
-<!-- Display sentiment result directly below the analyze button -->
-{% if sentiment_result %}
-    <div class="alert alert-info" role="alert" style="margin-top: 1rem;width: 80rem; ">
-        Sentiment: {{ sentiment_result }}
-    </div>
-{% endif %}
-
-<!-- Display error message if any -->
-{% if error_message %}
-    <div class="alert alert-danger" role="alert" style="margin-top: 1rem;">
-        {{ error_message }}
-    </div>
-{% endif %}
-
-<!-- Clear data form -->
-<form class="clear" action="{{ url_for('clear_data') }}" method="post">
-    {{ form.hidden_tag() }}  
-    <button type="submit" class="btn btn-danger" name="clear">Clear Data</button>
-</form>
 
 <style>
     body {
         height: 95vh !important;
-        background-color: #77798c; /* Ensure this matches your body background color */
+        /* background-color: #ffffff !important; */
         color: white; /* Set text color for better visibility */
+    }
+    input{
+        color: #000;
+        margin: 0;
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        width: 28rem;
     }
     .upload {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 40rem;
-        margin-top: 10rem;
+        gap: 2rem;
+        /* margin-top: 10rem; */
         /* border: 1px solid white; */
         height: 6rem !important;
-        width: 75rem !important;
+        /* width: 75rem !important; */
         border-radius: 1rem;
         
     }
@@ -83,10 +98,10 @@
     .upload img{
         width: 2rem;
     }
-    .clear {
-        margin-top: 5rem;
+    center{
         display: flex;
-        justify-content: center;
+        margin-top: 5rem;
+        justify-content: space-evenly;
     }
     a {
         color: #ffca01; /* Customize the link color */
@@ -100,16 +115,53 @@
         }
     .head {
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+        justify-content: flex-end;
     }
     .head img {
         width: 3rem;
         border-radius: 50%;
     }
+    .head h2{
+        color: #000 !important;
+        margin-top: 0;
+    }
+    h2{
+        color: #004792;
+        text-align: center;
+        font-weight: 400;
+        margin-top: 2rem;
+    }
     .form-group,.form-group button {
         width: 75rem;
-        margin: .5rem auto; 
+        margin: .5rem auto;
+        color: #fff;
+    }
+
+    .btn-outline-primary {
+        --bs-btn-bg: #0056b3;
+        --bs-btn-hover-bg: #fff;
+        --bs-btn-hover-color: #0056b3 ;
+        --bs-btn-active-bg: #fff; 
+        --bs-btn-active-border-color: #0056b3;
+        --bs-btn-disabled-bg: #e0e0e0;
+        --bs-btn-border-color: #0056b3;
+        --bs-btn-hover-border-color: #004494;
+        color: #fff;
+    }
+    .btn-outline-success {
+    --bs-btn-disabled-border-color: #004792;
+    --bs-btn-bg: #0056b3;
+    --bs-btn-hover-bg: #fff;
+    --bs-btn-hover-color: #0056b3 ;
+    --bs-btn-active-bg: #fff; 
+    --bs-btn-active-border-color: #0056b3;
+    --bs-btn-disabled-bg: #e0e0e0;
+    --bs-btn-border-color: #0056b3;
+    --bs-btn-hover-border-color: #004494;
+}
+    .sentiment-box{
+        position: relative;
+        transform: translateY(10rem);
     }
 </style>
 {% endblock %}
