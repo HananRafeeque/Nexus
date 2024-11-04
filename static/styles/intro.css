@@ -54,7 +54,7 @@ body{
     overflow: hidden; /* Ensures text is hidden initially */
     white-space: nowrap; /* Prevents text from wrapping */
     border-right: 0; /* Remove cursor effect */
-    animation: typing 2s steps(50, end) infinite; /* Typing animation */
+    animation: typing 3s steps(50, end) infinite; /* Typing animation */
     font-weight: bold;
     color: #000000;
     font-size: 2em; /* Adjust font size as needed */
@@ -155,7 +155,7 @@ body{
 
 
 .keys{
-    margin-top: 1rem;
+    margin-top: 3rem;
     color: #fff;
     background-color: #081158;
     font-family: "Red Hat Display", sans-serif;
