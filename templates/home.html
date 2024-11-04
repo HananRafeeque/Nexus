@@ -1,21 +1,61 @@
 {% extends 'layout.html' %}
 {% block title %}Home{% endblock %}
 {% block content %}
-<h2>Upload Dataset for Analysis</h2>
-<form class="upload" action="{{ url_for('home') }}" method="post" enctype="multipart/form-data">
-    {{ form.hidden_tag() }} 
-    {{ form.file }}  <button type="submit" class="btn btn-primary">Upload</button>
-    <!-- {{ form.submit }}   -->
+<div class="head">
+    <h2>Upload Dataset for Analysis</h2>
+    <h2><img src="/static/images/profile.png" alt=""> {{ username }}</h2>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+  <ul class="flashes">
+    {% for category, message in messages %}
+      <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+{% endwith %}
+
+
+<!-- File upload form -->
+    <center>
+        <form class="upload" action="{{ url_for('home') }}" method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }} 
+            {{ form.file }}  
+            <button type="submit" class="btn btn-outline-primary">Upload</button>
+        </form>
+    </center>
+
+<!-- Review textarea for sentiment analysis -->
+<form id="reviewForm" action="{{ url_for('home') }}" method="post">
+    {{ form.hidden_tag() }}  <!-- Include CSRF token here -->
+    <div class="form-group">
+        <label for="reviews">Type your reviews:</label>
+        <textarea id="reviews" name="review" rows="3" cols="40" placeholder="Enter your review here..." class="form-control"></textarea>
+        <button type="submit" class="btn btn-outline-success">Analyze</button>
+    </div>
 </form>
 
+
+
+<!-- Display sentiment result directly below the analyze button -->
+{% if sentiment_result %}
+    <div class="alert alert-info" role="alert" style="margin-top: 1rem;width: 80rem; ">
+        Sentiment: {{ sentiment_result }}
+    </div>
+{% endif %}
+
+<!-- Display error message if any -->
 {% if error_message %}
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger" role="alert" style="margin-top: 1rem;">
         {{ error_message }}
     </div>
 {% endif %}
 
-<form class="clear" action="{{ url_for('home') }}" method="post">
-    {{ form.hidden_tag() }}  <button type="submit" class="btn btn-danger" name="clear">Clear Data</button>
+<!-- Clear data form -->
+<form class="clear" action="{{ url_for('clear_data') }}" method="post">
+    {{ form.hidden_tag() }}  
+    <button type="submit" class="btn btn-danger" name="clear">Clear Data</button>
 </form>
 
 <style>
@@ -28,8 +68,20 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 10rem;
+        gap: 40rem;
         margin-top: 10rem;
+        /* border: 1px solid white; */
+        height: 6rem !important;
+        width: 75rem !important;
+        border-radius: 1rem;
+        
+    }
+    .upload button{
+        width: 10rem;
+        height: 3rem;
+    }
+    .upload img{
+        width: 2rem;
     }
     .clear {
         margin-top: 5rem;
@@ -38,8 +90,26 @@
     }
     a {
         color: #ffca01; /* Customize the link color */
-        text-decoration: underline; /* Make links more noticeable */
-        text-decoration: none;
+        text-decoration: none; /* Make links more noticeable */
+    }
+
+    .flashes{
+            list-style-type: none !important;
+            color: red !important;
+            font-weight: bold !important;
+        }
+    .head {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .head img {
+        width: 3rem;
+        border-radius: 50%;
+    }
+    .form-group,.form-group button {
+        width: 75rem;
+        margin: .5rem auto; 
     }
 </style>
 {% endblock %}

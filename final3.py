@@ -22,6 +22,8 @@ from sklearn.naive_bayes import MultinomialNB
 from flask_wtf.csrf import CSRFProtect
 from forms import RegistrationForm, UploadForm
 from forms import LoginForm
+from flask_login import current_user
+
 
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
@@ -184,6 +186,26 @@ def train_and_evaluate_models(df):
     }
     
 
+
+#code for clear data
+@app.route('/clear_data', methods=['POST'])
+@login_required
+def clear_data():
+    # Delete the analyzed data file if it exists
+    if os.path.exists(ANALYZED_DATA_PATH):
+        os.remove(ANALYZED_DATA_PATH)
+        flash("Analyzed data cleared successfully.", "success")
+
+    # Delete the chart image if it exists
+    if os.path.exists(CHART_PATH):
+        os.remove(CHART_PATH)
+        flash("Chart cleared successfully.", "success")
+
+    # Redirect back to the dashboard
+    return redirect(url_for('home'))
+
+
+
 # Route for the homepage
 @app.route('/')
 def intro():
@@ -211,14 +233,25 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         
-        flash('Registration successful! You can now log in.', 'success')
+        flash('Registration  successful! You can log-in now.', 'success')
         return redirect(url_for('login'))
     
     return render_template('register.html',form=form)
 
+
+def clear_analyzed_data():
+    """Removes previous analyzed data and chart files if they exist."""
+    if os.path.exists(ANALYZED_DATA_PATH):
+        os.remove(ANALYZED_DATA_PATH)
+    if os.path.exists(CHART_PATH):
+        os.remove(CHART_PATH)
+
+
+
 # Route for the login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    clear_analyzed_data()
     form = LoginForm()
     if form.validate_on_submit():  # to use Flask-WTF's form validation and CSRF protection
         username = form.username.data  # to access form data via Flask-WTF
@@ -236,26 +269,29 @@ def login():
     
     return render_template('login.html', form=form)
 
-
-
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
     form = UploadForm()
-    if form.validate_on_submit():  # Ensure form validation and CSRF protection
-        file = request.files['file']
-        
-    if request.method == 'POST':
-        if 'clear' in request.form:
-            if form.validate_on_submit():
-                if os.path.exists(ANALYZED_DATA_PATH):
-                    os.remove(ANALYZED_DATA_PATH)
-                    print("Removed analyzed_reviews.csv")
-                if os.path.exists(CHART_PATH):
-                    os.remove(CHART_PATH)
-                    print("Removed sentiment_chart.png")
-                return render_template('home.html', chart_exists=False)
+    sentiment_result = None  # Initialize sentiment_result
+    error_message = None  # Initialize error_message
 
+    if form.validate_on_submit():  # Ensure form validation and CSRF protection
+        file = request.files.get('file')
+
+        # Clear button check
+        if 'clear' in request.form:
+            # Remove analyzed dataset and chart files if they exist
+            if os.path.exists(ANALYZED_DATA_PATH):
+                os.remove(ANALYZED_DATA_PATH)
+                print("Removed analyzed_reviews.csv")
+            if os.path.exists(CHART_PATH):
+                os.remove(CHART_PATH)
+                print("Removed sentiment_chart.png")
+            flash('Data cleared successfully.', 'success')
+            return render_template('home.html', form=form, chart_exists=False, username=current_user.username)
+
+        # File upload processing
         if 'file' not in request.files:
             flash('No file selected.', 'error')
             return redirect(request.url)
@@ -283,11 +319,11 @@ def home():
 
         if rating_column is None:
             flash("Could not find a rating column in the dataset.", 'error')
-            return render_template('home.html')
+            return render_template('home.html', form=form)
 
         if 'reviews' not in df.columns:
             flash("The dataset must contain a 'reviews' column.", 'error')
-            return render_template('home.html')
+            return render_template('home.html', form=form)
 
         # Preprocessing and sentiment analysis
         df = df.drop_duplicates()
@@ -311,9 +347,25 @@ def home():
         print("Naive Bayes Model Accuracy:", model_results['nb_accuracy'])
         print("Naive Bayes Classification Report:\n", model_results['nb_report'])
 
+        # Redirect to dashboard after processing
         return redirect(url_for('dashboard'))
 
-    return render_template('home.html', form=form, chart_exists=False)
+    # Review analysis logic
+    if 'review' in request.form:
+        review = request.form['review']
+        blob = TextBlob(review)
+        sentiment = blob.sentiment.polarity
+
+        if sentiment > 0:
+            sentiment_result = 'Positive'
+        elif sentiment < 0:
+            sentiment_result = 'Negative'
+        else:
+            sentiment_result = 'Neutral'
+
+        return render_template('home.html', form=form, sentiment_result=sentiment_result, username=current_user.username)
+
+    return render_template('home.html', form=form, chart_exists=False, username=current_user.username)
 
 
 # Route for the about page
@@ -327,7 +379,6 @@ def about():
 @login_required
 def team():
     return render_template('team.html')
-
 
 @app.route('/dashboard')
 @login_required
@@ -344,15 +395,21 @@ def dashboard():
         negative_reviews = len(df[df['Sentiment'] == 'Negative'])
         neutral_reviews = len(df[df['Sentiment'] == 'Neutral'])
 
+        # Find top positive and top negative reviews if they exist
+        top_positive = df[df['Sentiment'] == 'Positive']['reviews'].mode().iloc[0] if positive_reviews > 0 else "None"
+        top_negative = df[df['Sentiment'] == 'Negative']['reviews'].mode().iloc[0] if negative_reviews > 0 else "None"
+
         # Check if there's a chart generated
         chart_exists = os.path.exists(CHART_PATH)
 
         return render_template('dashboard.html', chart_exists=chart_exists, reviews=reviews,
                                total_reviews=total_reviews, positive_reviews=positive_reviews,
-                               negative_reviews=negative_reviews,neutral_reviews=neutral_reviews)
+                               negative_reviews=negative_reviews, neutral_reviews=neutral_reviews,
+                               top_positive=top_positive, top_negative=top_negative)
     else:
-        return render_template('dashboard.html', chart_exists=False, reviews=[], total_reviews=0, positive_reviews=0, negative_reviews=0, neutral_reviews=0)
-
+        return render_template('dashboard.html', chart_exists=False, reviews=[], total_reviews=0,
+                               positive_reviews=0, negative_reviews=0, neutral_reviews=0,
+                               top_positive="None", top_negative="None")
 
 
 @app.route('/download')
@@ -374,8 +431,8 @@ def download_chart():
 @app.route('/logout')
 def logout():
     logout_user()  # Log the user out using Flask-Login.
-    flash('You have been logged out.', 'success')  # Flash a success message
-    return redirect(url_for('intro'))
+    flash('You have been logged-out.', 'success')  # Flash a success message
+    return redirect(url_for('login'))
 
 
         

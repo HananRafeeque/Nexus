@@ -5,16 +5,50 @@
 @import url('https://fonts.googleapis.com/css2?family=Asul:wght@400;700&display=swap');
 
 *{
-    margin: .5rem;
+    margin: 0;
 
 }
 body{
     background-color: #fff;
     color: #081158;
+    margin-left: 2rem;
 }
 li{
     margin-left: 1.5rem;
 }
+
+.senti {
+    overflow: hidden; /* Ensures the content is not revealed until the animation */
+    white-space: nowrap; /* Keeps the content on a single line */
+    border-right: 2px solid; /* The typewriter cursor */
+    width: 0; /* Starts with zero width */
+    animation: typing 3.5s steps(30, end) infinite alternate; /* Continuous typing animation */
+    
+}
+
+/* The typing effect */
+@keyframes typing {
+    0% { width: 0; } /* Start with no width */
+    100% { width: 65%; } /* Full width at the end */
+}
+
+/* Blinking cursor */
+@keyframes blink-caret {
+    from, to { border-color: transparent; } /* Cursor invisible */
+    50% { border-color: rgb(0, 0, 0); } /* Cursor visible */
+}
+
+.blinking-caret {
+    display: inline-block; /* To align with the text */
+    animation: blink-caret 0.75s step-end infinite; /* Blinking animation */
+    position: relative; /* Allow positioning relative to text */
+    margin-left: -2px; /* Adjust the caret position if necessary */
+    
+}
+
+
+
+  
 .head h1{
     /* font-family: Arial, sans-serif;
     font-weight: 400;
@@ -47,6 +81,7 @@ li{
     flex-direction: row;
     /* justify-content: space-around; */
     gap: 5rem;
+    height: 75vh;
 }
 .w1 img{
     height: 35rem;
@@ -102,6 +137,8 @@ li{
     margin: 1rem;
 } */
 
+
+
 .keys{
     margin-top: 3rem    ;
     color: #fff;
@@ -110,10 +147,11 @@ li{
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
-    margin: 0 -2rem;
     display: flex;
     font-size: 1.7rem;
     list-style-type: none;
+    padding: 2rem;
+
 }
 
 
@@ -127,30 +165,31 @@ li{
 .follow{
     display: flex;
     flex-direction: row;
+    gap: 10rem;
 }
 
 .h{
     display: flex;
     flex-direction: column;
 }
-.follow ul{
+.logo ul{
     display: flex;
     flex-direction: row;
     margin-top: 1.5rem;
 }
-.follow img{
+.logo img{
     width: 2rem;
     align-items: center;
     justify-content: center;
 }
-.follow li{
+.logo li{
     list-style-type: none;
 }
 
 .fol-con{
     display: flex;
     flex-direction: row;
-    gap: 10rem;
+    /* justify-content: space-between; */
 }
 
 .footer{
@@ -158,4 +197,23 @@ li{
     flex-direction: row;
     align-items: center;
     justify-content: center;    
+}
+
+.con-us{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+.follow{
+    margin: 2rem;
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-between !important; */
+    gap: 40rem !important;
+}
+
+.contact{
+    padding: 2rem;
 }

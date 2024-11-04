@@ -1,11 +1,24 @@
-{% extends 'intro.html' %}
-{% block title %}Home{% endblock %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/styles/styles.css">
+</head>
+<body>
+    
 
+  <div class="main">
+    <center>
+        <h1>
+            Sentiment Analysis of Customer Reviews
+        </h1>
+    </center>
     <div class="register">
         <h2>Register</h2>
-        <form method="POST" action="{{ url_for('register') }}">
-            {{ form.hidden_tag() }}  <!-- CSRF token for security -->
+        <form method="POST" action="{{ url_for('register') }}" autocomplete="off">
+            {{ form.hidden_tag() }} <!-- CSRF token for security -->
             <div class="ele">
                 <input type="text" name="username" placeholder="Username" required>
                 <input type="email" name="email" placeholder="Email" required>
@@ -13,85 +26,36 @@
                 <button type="submit">Register</button>
             </div>
         </form>
+        
         <div class="login-link">
             <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+            <div class="forgot">
+                <!-- <a href="/">Forgot password?</a> -->
+                <a href="/">go to home?</a>
+            </div>
         </div>
 
-        <div class="goto">
-            <a href="/">go to home</a>
-        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <ul class="flashes">
+            {% for category, message in messages %}
+              <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+
+
     </div>
 
-    
+
+  </div>
+
+</body>
+</html>
+
+
 <style>
-    .register {
-    background-color: white; /* Consistent with your theme */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    width: 23rem !important;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-left: 15rem;
-    margin-top: 5%;
-}
 
-h2 {
-    text-align: center;
-    color: #081158; /* Heading color */
-    margin-bottom: 20px;
-}
 
-.ele {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-input {
-    width: 20rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-}
-
-button {
-    width: 20rem;
-    background-color: #ffca01; /* Button color consistent with your theme */
-    color: #10143a; /* Dark text color for contrast */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-button:hover {
-    background-color: #ac8600; /* Darker shade for hover effect */
-}
-
-.login-link, .register-link {
-    text-align: center;
-    margin-top: 15px;
-    color: #ffffff; /* Link text color */
-}
-
-.login-link a, .register-link a {
-    color: #ffca01; /* Link color */
-    text-decoration: none; /* No underline */
-}
-
-.login-link a:hover, .register-link a:hover {
-    text-decoration: underline; /* Underline on hover */
-}
-
-.goto a {
-    color: #081158; /* Color consistent with theme */
-    text-decoration: none;
-}
-
-.goto a:hover {
-    text-decoration: underline;
-}
 </style>
-{% endblock %}
