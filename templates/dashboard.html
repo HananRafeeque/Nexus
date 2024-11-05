@@ -37,7 +37,7 @@
             color: #000;
         }
         .review-counts p:hover {
-            background-color: #000;
+            background-color: #0A1F44;
             color: #fff;
             transition: .5s ease-in-out;
             scale: 1.1;
@@ -47,7 +47,7 @@
             height: 300px;
             overflow-y: auto;
             margin: 5rem 2rem;
-            border: solid 1px #004792;
+            border: solid 1px #0A1F44 !important;
             scrollbar-color: #888 #333 !important;
             scrollbar-width: thin !important;
             border-radius: 2px;
@@ -59,11 +59,11 @@
         thead {
             position: sticky;
             top: 0;
-            background-color: #004792;
+            background-color: #0A1F44;
             z-index: 10;
         }
         th, td {
-            border: 2px solid #004792;
+            border: 2px solid #0A1F44;
             padding: 8px;
             text-align: left;
         }
@@ -151,7 +151,7 @@
             text-align: center;
         }
         .top p:hover{
-            background-color: #000000;
+            background-color: #0A1F44;
             color: rgb(255, 255, 255);
             transition: .5s ease-in-out;
             scale: 1.1;
@@ -170,8 +170,8 @@
 
         </div>
         <div class="top">
-            <p><strong>Top Positive Review:</strong> <br>{{ top_positive }}</p>
-            <p><strong>Top Negative Review:</strong> <br>{{ top_negative }}</p>
+            <p><strong>Top Positive Review:</strong><br>{{ top_positive }}</p>
+            <p><strong>Top Negative Review:</strong><br>{{ top_negative }}</p>
         </div>
 
         <!-- Chart.js charts -->
@@ -234,12 +234,12 @@
         window.onload = function() {
             document.getElementById('loading').style.display = 'block'; // Show loading
         };
-
+    
         // Hide loading indicator after the page is loaded
         window.addEventListener('load', function() {
             document.getElementById('loading').style.display = 'none'; // Hide loading
         });
-
+    
         // Show loading when a form is submitted
         const form = document.querySelector('form');
         if (form) {
@@ -247,11 +247,11 @@
                 document.getElementById('loading').style.display = 'block'; // Show loading
             });
         }
-
+    
         const positiveReviews = {{ positive_reviews }};
         const negativeReviews = {{ negative_reviews }};
         const neutralReviews = {{ neutral_reviews }};
-
+    
         // Chart.js code
         const ctx = document.getElementById('myChart').getContext('2d');
         const myChart = new Chart(ctx, {
@@ -262,14 +262,14 @@
                     label: 'Sentiment Analysis',
                     data: [positiveReviews, negativeReviews, neutralReviews],
                     backgroundColor: [
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 206, 86, 0.2)'
+                        'rgba(75, 192, 192, 0.6)',  // Darker teal
+                        'rgba(255, 99, 132, 0.6)',  // Darker pink
+                        'rgba(255, 206, 86, 0.6)'   // Darker yellow
                     ],
                     borderColor: [
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 206, 86, 1)'
+                        'rgba(75, 192, 192, 1)',     // Original teal
+                        'rgba(255, 99, 132, 1)',     // Original pink
+                        'rgba(255, 206, 86, 1)'      // Original yellow
                     ],
                     borderWidth: 1
                 }]
@@ -282,7 +282,7 @@
                 }
             }
         });
-
+    
         const pieCtx = document.getElementById('myPieChart').getContext('2d');
         const myPieChart = new Chart(pieCtx, {
             type: 'pie',
@@ -292,20 +292,20 @@
                     label: 'Sentiment Analysis',
                     data: [positiveReviews, negativeReviews, neutralReviews],
                     backgroundColor: [
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 206, 86, 0.2)'
+                        'rgba(75, 192, 192, 0.6)',  // Darker teal
+                        'rgba(255, 99, 132, 0.6)',  // Darker pink
+                        'rgba(255, 206, 86, 0.6)'   // Darker yellow
                     ],
                     borderColor: [
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 206, 86, 1)'
+                        'rgba(75, 192, 192, 1)',     // Original teal
+                        'rgba(255, 99, 132, 1)',     // Original pink
+                        'rgba(255, 206, 86, 1)'      // Original yellow
                     ],
                     borderWidth: 1
                 }]
             }
         });
-
+    
         const lineCtx = document.getElementById('myLineChart').getContext('2d');
         const myLineChart = new Chart(lineCtx, {
             type: 'line',
@@ -314,8 +314,8 @@
                 datasets: [{
                     label: 'Sentiment Analysis (Line)',
                     data: [positiveReviews, negativeReviews, neutralReviews],
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',  // Darker teal
+                    borderColor: 'rgba(75, 192, 192, 1)',         // Original teal
                     borderWidth: 1,
                     fill: true // Optional, to fill under the line
                 }]
@@ -329,4 +329,5 @@
             }
         });
     </script>
+    
 {% endblock %}

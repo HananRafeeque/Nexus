@@ -5,7 +5,7 @@
     <h2><img src="/static/images/profile.png" alt=""> {{ username }}</h2>
 </div>
 
-<h2>Upload Dataset for Analysis</h2>
+<h2><b>Upload Dataset for Analysis</b></h2>
 
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
@@ -23,15 +23,17 @@
         <form class="upload" action="{{ url_for('home') }}" method="post" enctype="multipart/form-data">
             {{ form.hidden_tag() }} 
             {{ form.file }}  
-            <button type="submit" class="btn btn-outline-primary">Upload</button>
+            <button type="submit" class="upload-but">Upload</button>
         </form>
-        <!-- Clear data form -->
-        <form class="clear" action="{{ url_for('clear_data') }}" method="post">
-            {{ form.hidden_tag() }}  
-            <button type="submit" class="btn btn-danger" name="clear">Clear Data</button>
-        </form>
-    </center>
 
+    </center>
+    <center>
+               <!-- Clear data form -->
+               <form class="clear" action="{{ url_for('clear_data') }}" method="post">
+                {{ form.hidden_tag() }}  
+                <button type="submit" class="btn btn-danger" name="clear">Clear Data</button>
+            </form>
+    </center>
 <!-- Review textarea for sentiment analysis -->
 <div class="sentiment-box">
     <form id="reviewForm" action="{{ url_for('home') }}" method="post">
@@ -39,7 +41,7 @@
         <div class="form-group">
             <label for="reviews">Check Sentimence Quickly</label>
             <textarea id="reviews" name="review" rows="3" cols="40" placeholder="Enter your review here..." class="form-control"></textarea>
-            <button type="submit" class="btn btn-outline-success">Analyze</button>
+            <button type="submit" class="analyse-but">Analyze</button>
         </div>
     </form>
     
@@ -66,7 +68,7 @@
     body {
         height: 95vh !important;
         /* background-color: #ffffff !important; */
-        color: white; /* Set text color for better visibility */
+        color: white ; /* Set text color for better visibility */
     }
     input{
         color: #000;
@@ -74,33 +76,45 @@
         font-family: inherit;
         font-size: inherit;
         line-height: inherit;
-        border: 1px solid #e0e0e0;
+        /* border: 1px solid #e0e0e0; */
         border-radius: 4px;
         width: 28rem;
     }
     .upload {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         justify-content: center;
         align-items: center;
         gap: 2rem;
         /* margin-top: 10rem; */
         /* border: 1px solid white; */
-        height: 6rem !important;
+        /* height: 6rem !important; */
         /* width: 75rem !important; */
         border-radius: 1rem;
         
     }
-    .upload button{
-        width: 10rem;
-        height: 3rem;
-    }
+
     .upload img{
         width: 2rem;
     }
+
+    .upload-but{
+        background-color: #0A1F44;
+        color: white;
+        border-radius: 10px;
+        height: 3rem !important;
+        width: 10rem;
+    }
+    .upload-but:hover{
+        background-color: #132c59;
+    }
+
+    .clear{
+        margin-top: 3rem;
+    }
     center{
         display: flex;
-        margin-top: 5rem;
+        /* margin-top: 5rem; */
         justify-content: space-evenly;
     }
     a {
@@ -122,11 +136,11 @@
         border-radius: 50%;
     }
     .head h2{
-        color: #000 !important;
+        color: #10263d !important;
         margin-top: 0;
     }
     h2{
-        color: #004792;
+        color: #10263d;
         text-align: center;
         font-weight: 400;
         margin-top: 2rem;
@@ -137,31 +151,15 @@
         color: #fff;
     }
 
-    .btn-outline-primary {
-        --bs-btn-bg: #0056b3;
-        --bs-btn-hover-bg: #fff;
-        --bs-btn-hover-color: #0056b3 ;
-        --bs-btn-active-bg: #fff; 
-        --bs-btn-active-border-color: #0056b3;
-        --bs-btn-disabled-bg: #e0e0e0;
-        --bs-btn-border-color: #0056b3;
-        --bs-btn-hover-border-color: #004494;
-        color: #fff;
+    .analyse-but{
+        background-color: #0A1F44;
+        height: 3rem;
+        border-radius: 10px;
     }
-    .btn-outline-success {
-    --bs-btn-disabled-border-color: #004792;
-    --bs-btn-bg: #0056b3;
-    --bs-btn-hover-bg: #fff;
-    --bs-btn-hover-color: #0056b3 ;
-    --bs-btn-active-bg: #fff; 
-    --bs-btn-active-border-color: #0056b3;
-    --bs-btn-disabled-bg: #e0e0e0;
-    --bs-btn-border-color: #0056b3;
-    --bs-btn-hover-border-color: #004494;
-}
     .sentiment-box{
         position: relative;
         transform: translateY(10rem);
+        margin-top: -4rem;
         
     }
 </style>
