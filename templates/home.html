@@ -39,7 +39,7 @@
     <form id="reviewForm" action="{{ url_for('home') }}" method="post">
         {{ form.hidden_tag() }}  <!-- Include CSRF token here -->
         <div class="form-group">
-            <label for="reviews">Check Sentimence Quickly</label>
+            <label for="reviews" style="color: black; font-weight: bold;">Check Sentimence Quickly</label>
             <textarea id="reviews" name="review" rows="3" cols="40" placeholder="Enter your review here..." class="form-control"></textarea>
             <button type="submit" class="analyse-but">Analyze</button>
         </div>
@@ -160,6 +160,10 @@
         position: relative;
         transform: translateY(10rem);
         margin-top: -4rem;
+        
+    }
+    #file{
+        font-size: 20px;
         
     }
 </style>
