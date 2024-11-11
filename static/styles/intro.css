@@ -107,7 +107,7 @@ body{
     height: 75vh;
 }
 .w1 img{
-    height: 40rem;
+    height: 35rem;
     border-radius: 10px;
 }
 .desc h2{
@@ -140,7 +140,7 @@ body{
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    margin: 2rem 0;
+    /* margin: 1rem 0; */
     font-size: 1.5rem;
 }
 .desc button:hover{
