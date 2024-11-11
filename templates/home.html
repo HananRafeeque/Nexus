@@ -49,7 +49,7 @@
     
     <!-- Display sentiment result directly below the analyze button -->
     {% if sentiment_result %}
-        <div class="alert alert-info" role="alert" style="margin: 1rem auto; width: 75rem;">
+        <div class="alert alert-info" role="alert" style="margin: 1rem auto; width: 70rem;">
             Sentiment: {{ sentiment_result }}
         </div>
     {% endif %}
@@ -145,8 +145,13 @@
         font-weight: 400;
         margin-top: 2rem;
     }
-    .form-group,.form-group button {
-        width: 75rem;
+    .form-group{
+        width: 95%;
+        margin: .5rem auto;
+        color: #fff;
+    }
+    .form-group button {
+        width: 100%;
         margin: .5rem auto;
         color: #fff;
     }
@@ -159,11 +164,12 @@
     .sentiment-box{
         position: relative;
         transform: translateY(10rem);
-        margin-top: -4rem;
+        margin-top: -6rem;
+        
         
     }
     #file{
-        font-size: 20px;
+        font-size: 18px;
         
     }
 </style>
