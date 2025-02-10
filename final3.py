@@ -68,6 +68,15 @@ def load_user(user_id):
 with app.app_context():
     db.create_all()
 
+
+# Function to predict churn based on sentiment
+def predict_churn(sentiment):
+    if sentiment == 'Negative':
+        return 'Non-Retained'  # Churn
+    else:
+        return 'Retained'  # Not Churn
+
+
 # Sentiment Analysis Function using TextBlob
 def analyze_sentiment(review):
     analysis = TextBlob(review)
@@ -398,6 +407,9 @@ def dashboard():
         # Find top positive and top negative reviews if they exist
         top_positive = df[df['Sentiment'] == 'Positive']['reviews'].mode().iloc[0] if positive_reviews > 0 else "None"
         top_negative = df[df['Sentiment'] == 'Negative']['reviews'].mode().iloc[0] if negative_reviews > 0 else "None"
+        for review in reviews:
+            review['Churn'] = 'Non-retain' if review['Sentiment'] == 'Negative' else 'Retain'
+
 
         # Check if there's a chart generated
         chart_exists = os.path.exists(CHART_PATH)
