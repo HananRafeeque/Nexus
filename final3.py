@@ -77,6 +77,10 @@ def predict_churn(sentiment):
         return 'Retained'  # Not Churn
 
 
+
+    
+
+
 # Sentiment Analysis Function using TextBlob
 def analyze_sentiment(review):
     analysis = TextBlob(review)
@@ -127,22 +131,6 @@ def train_and_evaluate_models(df):
     # Split the dataset into training and testing sets
     text_train, text_test, labels_train, labels_test = train_test_split(text, labels, test_size=0.2, random_state=42)
     
-    # SVM Model
-    svm_vectorizer = CountVectorizer()
-    svm_features_train = svm_vectorizer.fit_transform(text_train)
-    svm_features_test = svm_vectorizer.transform(text_test)
-    svm = SVC(kernel='linear')
-    svm.fit(svm_features_train, labels_train)
-    svm_predictions = svm.predict(svm_features_test)
-    svm_accuracy = accuracy_score(labels_test, svm_predictions)
-
-    # Generate and save SVM confusion matrix
-    conf_matrix_svm = confusion_matrix(labels_test, svm_predictions)
-    disp_svm = ConfusionMatrixDisplay(confusion_matrix=conf_matrix_svm)
-    disp_svm.plot(cmap="Blues")
-    plt.title("SVM Confusion Matrix")
-    plt.savefig(SVM_CM_PATH)
-    plt.close()
 
 
     # Random Forest Model
@@ -163,31 +151,14 @@ def train_and_evaluate_models(df):
     plt.close()
     
 
-    # Naive Bayes Model
-    nb_vectorizer = CountVectorizer()
-    nb_features_train = nb_vectorizer.fit_transform(text_train)
-    nb_features_test = nb_vectorizer.transform(text_test)
-    nb = MultinomialNB()
-    nb.fit(nb_features_train, labels_train)
-    nb_predictions = nb.predict(nb_features_test)
-    nb_accuracy = accuracy_score(labels_test, nb_predictions)
-
-    # Generate and save Naive Bayes confusion matrix
-    conf_matrix_nb = confusion_matrix(labels_test, nb_predictions)
-    disp_nb = ConfusionMatrixDisplay(confusion_matrix=conf_matrix_nb)
-    disp_nb.plot(cmap="Greens")
-    plt.title("Naive Bayes Confusion Matrix")
-    plt.savefig(NB_CM_PATH)
-    plt.close()
-
     # Return model performances
     return {
-        'svm_accuracy': svm_accuracy,
+        # 'svm_accuracy': svm_accuracy,
         'rf_accuracy': rf_accuracy,
-        'nb_accuracy': nb_accuracy,
-        'svm_report': classification_report(labels_test, svm_predictions),
+        # 'nb_accuracy': nb_accuracy,
+        # 'svm_report': classification_report(labels_test, svm_predictions),
         'rf_report': classification_report(labels_test, rf_pred),
-        'nb_report': classification_report(labels_test, nb_predictions),
+        # 'nb_report': classification_report(labels_test, nb_predictions),
 
         'svm_cm_path': SVM_CM_PATH,
         'rf_cm_path': RF_CM_PATH,
@@ -278,12 +249,25 @@ def login():
     
     return render_template('login.html', form=form)
 
+
+def churn_prediction(sentiment):
+    # Provide a more accurate churn prediction based on sentiment
+    if sentiment > 0:
+        return 'Retain'
+    elif sentiment < 0:
+        return 'Non Retain'
+    else:
+        return 'Maybe Retain or Non Retain' 
+
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
+
+    
     form = UploadForm()
     sentiment_result = None  # Initialize sentiment_result
     error_message = None  # Initialize error_message
+    
 
     if form.validate_on_submit():  # Ensure form validation and CSRF protection
         file = request.files.get('file')
@@ -326,6 +310,8 @@ def home():
                 print(f"Detected rating column: {rating_column}")  # Debugging statement
                 break
 
+        
+
         if rating_column is None:
             flash("Could not find a rating column in the dataset.", 'error')
             return render_template('home.html', form=form)
@@ -333,6 +319,8 @@ def home():
         if 'reviews' not in df.columns:
             flash("The dataset must contain a 'reviews' column.", 'error')
             return render_template('home.html', form=form)
+        
+
 
         # Preprocessing and sentiment analysis
         df = df.drop_duplicates()
@@ -347,18 +335,12 @@ def home():
 
         # Train and evaluate models, then print results in the terminal
         model_results = train_and_evaluate_models(df)
-        
-        # Print model accuracy and classification reports to the terminal
-        print("SVM Model Accuracy:", model_results['svm_accuracy'])
-        print("SVM Classification Report:\n", model_results['svm_report'])
+
         print("Random Forest Model Accuracy:", model_results['rf_accuracy'])
         print("Random Forest Classification Report:\n", model_results['rf_report'])
-        print("Naive Bayes Model Accuracy:", model_results['nb_accuracy'])
-        print("Naive Bayes Classification Report:\n", model_results['nb_report'])
 
-        # Redirect to dashboard after processing
         return redirect(url_for('dashboard'))
-
+    
     # Review analysis logic
     if 'review' in request.form:
         review = request.form['review']
@@ -371,10 +353,15 @@ def home():
             sentiment_result = 'Negative'
         else:
             sentiment_result = 'Neutral'
+        
 
         return render_template('home.html', form=form, sentiment_result=sentiment_result, username=current_user.username)
 
     return render_template('home.html', form=form, chart_exists=False, username=current_user.username)
+
+
+    
+
 
 
 # Route for the about page

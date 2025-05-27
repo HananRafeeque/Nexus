@@ -1,61 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/static/styles/styles.css">
-</head>
-<body>
-    
-
-  <div class="main">
-    <!-- <center>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <link rel="stylesheet" href="/static/styles/log-reg.css" />
+  </head>
+  <body>
+    <div class="main">
+      <!-- <center>
         <h1>
             Sentiment Analysis of Customer Reviews
         </h1>
     </center> -->
-    <div class="register">
+      <div class="register">
         <h2>Register</h2>
-        <form method="POST" action="{{ url_for('register') }}" autocomplete="off">
-            {{ form.hidden_tag() }} <!-- CSRF token for security -->
-            <div class="ele">
-                <input type="text" name="username" placeholder="Username" required>
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <button type="submit">Register</button>
-            </div>
+        <form
+          method="POST"
+          action="{{ url_for('register') }}"
+          autocomplete="off"
+        >
+          {{ form.hidden_tag() }}
+          <!-- CSRF token for security -->
+          <div class="ele">
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              required
+            />
+            <input type="email" name="email" placeholder="Email" required />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+            />
+            <button type="submit">Register</button>
+          </div>
         </form>
-        
+
         <div class="login-link">
-            <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
-            <div class="forgot">
-                <!-- <a href="/">Forgot password?</a> -->
-                <a href="/">go to home?</a>
-            </div>
+          <p>
+            Already have an account?
+            <a href="{{ url_for('login') }}">Login here</a>
+          </p>
+          <div class="forgot">
+            <!-- <a href="/">Forgot password?</a> -->
+            <a href="/">go to home?</a>
+          </div>
         </div>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-          <ul class="flashes">
-            {% for category, message in messages %}
-              <li class="{{ category }}">{{ message }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-      {% endwith %}
-
-
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+        <ul class="flashes">
+          {% for category, message in messages %}
+          <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %} {% endwith %}
+      </div>
     </div>
-
-
-  </div>
-
-</body>
+  </body>
 </html>
 
-
-<style>
-
-
-</style>
+<style></style>

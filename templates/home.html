@@ -1,172 +1,199 @@
-{% extends 'layout.html' %}
-{% block title %}Home{% endblock %}
-{% block content %}
+{% extends 'layout.html' %} {% block title %}Home{% endblock %} {% block content
+%}
 <div class="head">
-    <h2><img src="/static/images/profile.png" alt=""> {{ username }}</h2>
+  <h2><img src="/static/images/profile.png" alt="" /> {{ username }}</h2>
 </div>
 
 <h2><b>Upload Dataset for Analysis</b></h2>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-  <!-- <ul class="flashes">
+{% with messages = get_flashed_messages(with_categories=true) %} {% if messages
+%}
+<!-- <ul class="flashes">
     {% for category, message in messages %}
       <li class="{{ category }}">{{ message }}</li>
     {% endfor %}
   </ul> -->
-{% endif %}
-{% endwith %}
-
+{% endif %} {% endwith %}
 
 <!-- File upload form -->
-    <center>
-        <form class="upload" action="{{ url_for('home') }}" method="post" enctype="multipart/form-data">
-            {{ form.hidden_tag() }} 
-            {{ form.file }}  
-            <button type="submit" class="upload-but">Upload</button>
-        </form>
-
-    </center>
-    <center>
-               <!-- Clear data form -->
-               <form class="clear" action="{{ url_for('clear_data') }}" method="post">
-                {{ form.hidden_tag() }}  
-                <button type="submit" class="btn btn-danger" name="clear">Clear Data</button>
-            </form>
-    </center>
+<center>
+  <form
+    class="upload"
+    action="{{ url_for('home') }}"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    {{ form.hidden_tag() }} {{ form.file }}
+    <button type="submit" class="upload-but">Upload</button>
+  </form>
+</center>
+<center>
+  <!-- Clear data form -->
+  <form class="clear" action="{{ url_for('clear_data') }}" method="post">
+    {{ form.hidden_tag() }}
+    <button type="submit" class="btn btn-danger" name="clear">
+      Clear Data
+    </button>
+  </form>
+</center>
 <!-- Review textarea for sentiment analysis -->
 <div class="sentiment-box">
-    <form id="reviewForm" action="{{ url_for('home') }}" method="post">
-        {{ form.hidden_tag() }}  <!-- Include CSRF token here -->
-        <div class="form-group">
-            <label for="reviews" style="color: black; font-weight: bold;">Check Sentimence Quickly</label>
-            <textarea id="reviews" name="review" rows="3" cols="40" placeholder="Enter your review here..." class="form-control"></textarea>
-            <button type="submit" class="analyse-but">Analyze</button>
-        </div>
-    </form>
-    
-    
-    
-    <!-- Display sentiment result directly below the analyze button -->
-    {% if sentiment_result %}
-        <div class="alert alert-info" role="alert" style="margin: 1rem auto; width: 70rem;">
-            Sentiment: {{ sentiment_result }}
-        </div>
-    {% endif %}
-    
-    <!-- Display error message if any -->
-    {% if error_message %}
-        <div class="alert alert-danger" role="alert" style="margin-top: 1rem;">
-            {{ error_message }}
-        </div>
-    {% endif %}
+  <form id="reviewForm" action="{{ url_for('home') }}" method="post">
+    {{ form.hidden_tag() }}
+    <!-- Include CSRF token here -->
+    <div class="form-group">
+      <label for="reviews" style="color: black; font-weight: bold"
+        >Check Sentimence Quickly</label
+      >
+      <textarea
+        id="reviews"
+        name="review"
+        rows="3"
+        cols="40"
+        placeholder="Enter your review here..."
+        class="form-control"
+      ></textarea>
+      <button type="submit" class="analyse-but">Analyze</button>
+    </div>
+  </form>
+
+  <!-- Display sentiment result directly below the analyze button -->
+  {% if sentiment_result %}
+  <div
+    class="alert alert-info"
+    role="alert"
+    style="margin: 1rem auto; width: 70rem"
+  >
+    Sentiment: {{ sentiment_result }}<br />
+    <!-- Churn Prediction: {% if sentiment_result == 'positive' %} Retain {% elif
+    sentiment_result == 'negative' %} Non Retain {% else %} Maybe Retain or Non
+    Retain {% endif %} -->
+  </div>
+  {% elif churn_prediction %}
+  <!-- If no sentiment but churn prediction is available -->
+  <div
+    class="alert alert-info"
+    role="alert"
+    style="margin: 1rem auto; width: 70rem"
+  >
+    Sentiment: Not available<br />
+    Churn Prediction: {{ churn_prediction }}
+  </div>
+  {% endif %}
+
+  <!-- Display error message if any -->
+  {% if error_message %}
+  <div class="alert alert-danger" role="alert" style="margin-top: 1rem">
+    {{ error_message }}
+  </div>
+  {% endif %}
 </div>
 
-
-
 <style>
-    body {
-        height: 95vh !important;
-        /* background-color: #ffffff !important; */
-        color: white ; /* Set text color for better visibility */
-    }
-    input{
-        color: #000;
-        margin: 0;
-        font-family: inherit;
-        font-size: inherit;
-        line-height: inherit;
-        /* border: 1px solid #e0e0e0; */
-        border-radius: 4px;
-        width: 28rem;
-    }
-    .upload {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 2rem;
-        border-radius: 1rem;
-        
-    }
+  body {
+    height: 95vh !important;
+    /* background-color: #ffffff !important; */
+    color: white; /* Set text color for better visibility */
+  }
+  input {
+    color: #000;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    /* border: 1px solid #e0e0e0; */
+    border-radius: 4px;
+    width: 28rem;
+  }
+  .upload {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    border-radius: 1rem;
+  }
 
-    .upload img{
-        width: 2rem;
-    }
+  .upload img {
+    width: 2rem;
+  }
 
-    .upload-but{
-        background-color: #0A1F44;
-        color: white;
-        border-radius: 10px;
-        height: 3rem !important;
-        width: 10rem;
-    }
-    .upload-but:hover{
-        background-color: #132c59;
-    }
+  .upload-but {
+    background-color: #190019;
+    color: white;
+    border-radius: 10px;
+    height: 3rem !important;
+    width: 10rem;
+  }
+  .upload-but:hover {
+    background-color: #132c59;
+  }
 
-    .clear{
-        margin-top: 3rem;
-    }
-    center{
-        display: flex;
-        /* margin-top: 5rem; */
-        justify-content: space-evenly;
-    }
-    a {
-        color: #ffca01; /* Customize the link color */
-        text-decoration: none; /* Make links more noticeable */
-    }
+  .clear {
+    margin-top: 3rem;
+  }
+  center {
+    display: flex;
+    /* margin-top: 5rem; */
+    justify-content: space-evenly;
+  }
+  a {
+    color: #ffca01; /* Customize the link color */
+    text-decoration: none; /* Make links more noticeable */
+  }
 
-    .flashes{
-            list-style-type: none !important;
-            color: rgb(3, 78, 7) !important;
-            font-weight: bold !important;
-        }
-    .head {
-        display: flex;
-        justify-content: flex-end;
-    }
-    .head img {
-        width: 3rem;
-        border-radius: 50%;
-    }
-    .head h2{
-        color: #10263d !important;
-        margin-top: 0;
-    }
-    h2{
-        color: #10263d;
-        text-align: center;
-        font-weight: 400;
-        margin-top: 2rem;
-    }
-    .form-group{
-        width: 95%;
-        margin: .5rem auto;
-        color: #fff;
-    }
-    .form-group button {
-        width: 100%;
-        margin: .5rem auto;
-        color: #fff;
-    }
+  .flashes {
+    list-style-type: none !important;
+    color: rgb(3, 78, 7) !important;
+    font-weight: bold !important;
+  }
+  .head {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .head img {
+    width: 3rem;
+    border-radius: 50%;
+  }
+  .head h2 {
+    color: #10263d !important;
+    margin-top: 0;
+  }
+  h2 {
+    color: #10263d;
+    text-align: center;
+    font-weight: 400;
+    margin-top: 2rem;
+  }
+  .form-group {
+    width: 95%;
+    margin: 0.5rem auto;
+    color: #fff;
+  }
+  .form-group button {
+    width: 100%;
+    margin: 0.5rem auto;
+    color: #fff;
+  }
 
-    .analyse-but{
-        background-color: #0A1F44;
-        height: 3rem;
-        border-radius: 10px;
-    }
-    .sentiment-box{
-        position: relative;
-        transform: translateY(10rem);
-        margin-top: -6rem;
-        
-        
-    }
-    #file{
-        font-size: 18px;
-        
-    }
+  .analyse-but {
+    background-color: #0a1f44;
+    height: 3rem;
+    border-radius: 10px;
+  }
+  .sentiment-box {
+    position: relative;
+    transform: translateY(10rem);
+    margin-top: -6rem;
+  }
+  #file {
+    font-size: 18px;
+  }
+  .clear button {
+    background-color: #7a3037;
+  }
+  .clear button:hover {
+    background-color: #c93333;
+  }
 </style>
 {% endblock %}

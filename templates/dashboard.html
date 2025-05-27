@@ -1,6 +1,6 @@
 {% extends 'layout.html' %} {% block title %}Dashboard{% endblock %} {% block
 content %}
-<h2>Dashboard</h2>
+<h2>DASHBOARD</h2>
 
 {% with messages = get_flashed_messages(with_categories=true) %} {% if messages
 %}
@@ -13,7 +13,7 @@ content %}
 
 <style>
   h2 {
-    color: #004792;
+    color: #190019;
   }
   .flashes {
     list-style-type: none !important;
@@ -54,7 +54,7 @@ content %}
   thead {
     position: sticky;
     top: 0;
-    background-color: #0a1f44;
+    background-color: #2b124c;
     z-index: 10;
   }
   th,
@@ -95,9 +95,8 @@ content %}
   a {
     text-decoration: none;
     color: #ffca01;
-    text-decoration: underline;
+    text-decoration: none;
   }
-
   .d-but {
     display: flex;
     align-items: center;
@@ -109,6 +108,9 @@ content %}
   }
   .d-but a {
     color: white;
+  }
+  .d-but button {
+    background-color: #2b124c;
   }
   #myChart {
     width: 30rem !important;
@@ -181,7 +183,7 @@ content %}
         <th>Review</th>
         <th>Sentiment</th>
         <th>Emotion</th>
-        <th>Churn</th>
+        <!-- <th>Churn</th> -->
       </tr>
     </thead>
     <tbody>
@@ -191,14 +193,13 @@ content %}
         <td>{{ review['reviews'] }}</td>
         <td>{{ review['Sentiment'] }}</td>
         <td>{{ review['Emotion'] }}</td>
-        <td>{{ review['Churn'] }}</td>
-
-        <!-- Dynamically showing Churn value -->
+        <!-- <td>{{ review['Churn'] if review['Churn'] is not none else 'N/A' }}</td> -->
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
+
 <div class="buttons">
   <div class="d-but">
     <button type="button" class="btn btn-success">
@@ -206,7 +207,6 @@ content %}
     </button>
   </div>
 </div>
-
 {% else %}
 <div style="color: red">
   <p>No data available. Please upload a dataset on the Home page.</p>
@@ -217,20 +217,20 @@ content %}
 <script>
   // Show loading indicator when page is loading
   window.onload = function() {
-      document.getElementById('loading').style.display = 'block'; // Show loading
+    document.getElementById('loading').style.display = 'block'; // Show loading
   };
 
   // Hide loading indicator after the page is loaded
   window.addEventListener('load', function() {
-      document.getElementById('loading').style.display = 'none'; // Hide loading
+    document.getElementById('loading').style.display = 'none'; // Hide loading
   });
 
   // Show loading when a form is submitted
   const form = document.querySelector('form');
   if (form) {
-      form.addEventListener('submit', function() {
-          document.getElementById('loading').style.display = 'block'; // Show loading
-      });
+    form.addEventListener('submit', function() {
+      document.getElementById('loading').style.display = 'block'; // Show loading
+    });
   }
 
   const positiveReviews = {{ positive_reviews }};
@@ -240,78 +240,78 @@ content %}
   // Chart.js code
   const ctx = document.getElementById('myChart').getContext('2d');
   const myChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-          labels: ['Positive', 'Negative', 'Neutral'],
-          datasets: [{
-              label: 'Sentiment Analysis',
-              data: [positiveReviews, negativeReviews, neutralReviews],
-              backgroundColor: [
-                  'rgba(75, 192, 192, 0.6)',  // Darker teal
-                  'rgba(255, 99, 132, 0.6)',  // Darker pink
-                  'rgba(255, 206, 86, 0.6)'   // Darker yellow
-              ],
-              borderColor: [
-                  'rgba(75, 192, 192, 1)',     // Original teal
-                  'rgba(255, 99, 132, 1)',     // Original pink
-                  'rgba(255, 206, 86, 1)'      // Original yellow
-              ],
-              borderWidth: 1
-          }]
-      },
-      options: {
-          scales: {
-              y: {
-                  beginAtZero: true
-              }
-          }
+    type: 'bar',
+    data: {
+      labels: ['Positive', 'Negative', 'Neutral'],
+      datasets: [{
+        label: 'Sentiment Analysis',
+        data: [positiveReviews, negativeReviews, neutralReviews],
+        backgroundColor: [
+          '#522b5b',  // Darker teal
+          '#854f6c',  // Darker pink
+          '#dfb6b2'   // Darker yellow
+        ],
+        // borderColor: [
+        //   'rgba(75, 192, 192, 1)',     // Original teal
+        //   'rgba(255, 99, 132, 1)',     // Original pink
+        //   'rgba(255, 206, 86, 1)'      // Original yellow
+        // ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
       }
+    }
   });
 
   const pieCtx = document.getElementById('myPieChart').getContext('2d');
   const myPieChart = new Chart(pieCtx, {
-      type: 'pie',
-      data: {
-          labels: ['Positive', 'Negative', 'Neutral'],
-          datasets: [{
-              label: 'Sentiment Analysis',
-              data: [positiveReviews, negativeReviews, neutralReviews],
-              backgroundColor: [
-                  'rgba(75, 192, 192, 0.6)',  // Darker teal
-                  'rgba(255, 99, 132, 0.6)',  // Darker pink
-                  'rgba(255, 206, 86, 0.6)'   // Darker yellow
-              ],
-              borderColor: [
-                  'rgba(75, 192, 192, 1)',     // Original teal
-                  'rgba(255, 99, 132, 1)',     // Original pink
-                  'rgba(255, 206, 86, 1)'      // Original yellow
-              ],
-              borderWidth: 1
-          }]
-      }
+    type: 'pie',
+    data: {
+      labels: ['Positive', 'Negative', 'Neutral'],
+      datasets: [{
+        label: 'Sentiment Analysis',
+        data: [positiveReviews, negativeReviews, neutralReviews],
+        backgroundColor: [
+        '#522b5b',  // Darker teal
+          '#854f6c',  // Darker pink
+          '#dfb6b2'     // Darker yellow
+        ],
+        borderColor: [
+          'rgba(75, 192, 192, 1)',     // Original teal
+          'rgba(255, 99, 132, 1)',     // Original pink
+          'rgba(255, 206, 86, 1)'      // Original yellow
+        ],
+        borderWidth: 1
+      }]
+    }
   });
 
   const lineCtx = document.getElementById('myLineChart').getContext('2d');
   const myLineChart = new Chart(lineCtx, {
-      type: 'line',
-      data: {
-          labels: ['Positive', 'Negative', 'Neutral'],
-          datasets: [{
-              label: 'Sentiment Analysis (Line)',
-              data: [positiveReviews, negativeReviews, neutralReviews],
-              backgroundColor: 'rgba(75, 192, 192, 0.6)',  // Darker teal
-              borderColor: 'rgba(75, 192, 192, 1)',         // Original teal
-              borderWidth: 1,
-              fill: true // Optional, to fill under the line
-          }]
-      },
-      options: {
-          scales: {
-              y: {
-                  beginAtZero: true
-              }
-          }
+    type: 'line',
+    data: {
+      labels: ['Positive', 'Negative', 'Neutral'],
+      datasets: [{
+        label: 'Sentiment Analysis (Line)',
+        data: [positiveReviews, negativeReviews, neutralReviews],
+        backgroundColor: '#522b5b',  // Darker teal
+        borderColor: 'rgba(75, 192, 192, 1)',         // Original teal
+        borderWidth: 1,
+        fill: true // Optional, to fill under the line
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
       }
+    }
   });
 </script>
 
